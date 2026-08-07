@@ -1,270 +1,976 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UltimatePlayBet</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg:#07080c;
+      --card:#12151c;
+      --card2:#181c25;
+      --line:#282e39;
+      --text:#f7f8fb;
+      --muted:#9198a8;
+      --red:#ef4444;
+      --red2:#a91520;
+      --green:#35d07f;
+      --gold:#ffd166;
     }
 
-    body {
-      font-family: Arial, sans-serif;
-      background: #0b0b0d;
-      color: white;
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
     }
 
-    header {
-      background: #151519;
-      padding: 18px 20px;
-      border-bottom: 2px solid #e53935;
-      position: sticky;
-      top: 0;
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at 90% 0%,rgba(239,68,68,.12),transparent 30%),
+        var(--bg);
+      color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      padding-bottom:92px;
     }
 
-    .logo {
-      font-size: 26px;
-      font-weight: bold;
+    button,input{font:inherit}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px 16px;
+      background:rgba(7,8,12,.94);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--line);
     }
 
-    .logo span {
-      color: #e53935;
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:21px;
+      font-weight:900;
+      letter-spacing:-.8px;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
+    .logo-mark{
+      width:39px;
+      height:39px;
+      display:grid;
+      place-items:center;
+      border-radius:12px;
+      background:linear-gradient(145deg,var(--red),var(--red2));
+      box-shadow:0 8px 28px rgba(239,68,68,.28);
+      font-size:11px;
+      font-weight:900;
     }
 
-    .notice {
-      background: #202025;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 20px;
-      text-align: center;
+    .logo span{color:var(--red)}
+
+    .balance-mini{
+      text-align:right;
     }
 
-    .notice strong {
-      color: #e53935;
+    .balance-mini small{
+      display:block;
+      color:var(--muted);
+      font-size:9px;
+      letter-spacing:.12em;
+      font-weight:700;
     }
 
-    .balance {
-      background: linear-gradient(135deg, #202025, #111);
-      padding: 22px;
-      border-radius: 14px;
-      margin-bottom: 25px;
+    .balance-mini strong{
+      display:block;
+      margin-top:4px;
+      font-size:17px;
     }
 
-    .balance h2 {
-      font-size: 16px;
-      color: #aaa;
-      margin-bottom: 7px;
+    .wrap{
+      max-width:1000px;
+      margin:auto;
+      padding:16px;
     }
 
-    .balance-value {
-      font-size: 34px;
-      font-weight: bold;
+    .notice{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:11px 13px;
+      border:1px solid var(--line);
+      background:#12151b;
+      border-radius:13px;
+      font-size:11px;
+      margin-bottom:15px;
     }
 
-    h1 {
-      margin-bottom: 18px;
+    .notice strong{color:var(--gold)}
+    .notice span{color:var(--muted);text-align:right}
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border-radius:22px;
+      padding:22px;
+      border:1px solid #2d323e;
+      background:
+        linear-gradient(135deg,rgba(239,68,68,.20),rgba(239,68,68,0) 58%),
+        linear-gradient(150deg,#1a1e27,#0f1218);
+      margin-bottom:22px;
     }
 
-    .games {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
+    .hero:after{
+      content:"";
+      position:absolute;
+      width:210px;
+      height:210px;
+      border-radius:50%;
+      right:-90px;
+      top:-100px;
+      background:rgba(239,68,68,.14);
+      filter:blur(8px);
     }
 
-    .game {
-      background: #19191e;
-      border: 1px solid #303038;
-      border-radius: 14px;
-      padding: 25px 15px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.2s;
+    .eyebrow{
+      color:var(--red);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.16em;
     }
 
-    .game:hover {
-      transform: translateY(-3px);
-      border-color: #e53935;
+    .hero h1{
+      font-size:32px;
+      line-height:1.04;
+      margin:8px 0 9px;
+      letter-spacing:-1.3px;
+      max-width:600px;
     }
 
-    .game-icon {
-      font-size: 38px;
-      margin-bottom: 12px;
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:14px;
+      max-width:620px;
     }
 
-    .game h3 {
-      margin-bottom: 7px;
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:9px;
+      margin-top:18px;
     }
 
-    .game p {
-      color: #999;
-      font-size: 13px;
+    .stat{
+      border:1px solid #2b303a;
+      background:rgba(6,8,11,.55);
+      border-radius:13px;
+      padding:12px;
     }
 
-    .sports {
-      margin-top: 35px;
+    .stat small{
+      color:var(--muted);
+      display:block;
+      font-size:9px;
+      margin-bottom:5px;
     }
 
-    .match {
-      background: #19191e;
-      border-radius: 12px;
-      margin-bottom: 12px;
-      padding: 17px;
+    .stat b{
+      font-size:16px;
     }
 
-    .match-title {
-      font-weight: bold;
-      margin-bottom: 12px;
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      margin:24px 0 12px;
     }
 
-    .odds {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+    .section-head h2{
+      margin:0;
+      font-size:23px;
     }
 
-    .odd {
-      background: #292930;
-      border: none;
-      color: white;
-      border-radius: 8px;
-      padding: 12px 5px;
-      cursor: pointer;
-      font-weight: bold;
+    .section-head span{
+      color:var(--muted);
+      font-size:11px;
     }
 
-    .odd:hover {
-      background: #e53935;
+    .sport-tabs{
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      scrollbar-width:none;
+      padding-bottom:4px;
     }
 
-    footer {
-      color: #777;
-      text-align: center;
-      padding: 35px 20px;
-      font-size: 13px;
+    .sport-tabs button{
+      border:1px solid var(--line);
+      background:#12151c;
+      color:#a8afbd;
+      border-radius:999px;
+      padding:9px 14px;
+      white-space:nowrap;
     }
 
-    .simulation {
-      color: #aaa;
-      font-size: 12px;
-      margin-top: 5px;
+    .sport-tabs .active{
+      background:white;
+      color:#111;
+      font-weight:800;
+    }
+
+    .event{
+      border:1px solid var(--line);
+      background:var(--card);
+      border-radius:18px;
+      overflow:hidden;
+      margin-top:12px;
+    }
+
+    .event-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:13px 15px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .league{
+      color:var(--muted);
+      font-size:10px;
+      margin-bottom:4px;
+    }
+
+    .today{
+      color:var(--green);
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .teams{
+      padding:15px;
+      display:grid;
+      gap:12px;
+    }
+
+    .team{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .team-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:700;
+    }
+
+    .badge{
+      width:34px;
+      height:34px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      background:#242936;
+      color:#d4d7de;
+      font-size:10px;
+    }
+
+    .odds{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      padding:0 15px 15px;
+    }
+
+    .odd{
+      border:1px solid #303642;
+      background:#181c25;
+      color:white;
+      border-radius:12px;
+      padding:11px 5px;
+    }
+
+    .odd small{
+      display:block;
+      color:var(--muted);
+      margin-bottom:4px;
+      font-size:9px;
+    }
+
+    .odd.selected{
+      background:linear-gradient(145deg,var(--red),var(--red2));
+      border-color:transparent;
+    }
+
+    .casino-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+
+    .game{
+      position:relative;
+      overflow:hidden;
+      min-height:150px;
+      padding:16px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:linear-gradient(150deg,#1a1e27,#10131a);
+    }
+
+    .game:after{
+      content:"";
+      position:absolute;
+      width:100px;
+      height:100px;
+      border-radius:50%;
+      right:-25px;
+      top:-25px;
+      background:rgba(239,68,68,.08);
+    }
+
+    .game-icon{
+      font-size:36px;
+      margin-bottom:27px;
+    }
+
+    .game h3{
+      margin:0;
+      font-size:18px;
+    }
+
+    .game p{
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .play{
+      position:absolute;
+      right:12px;
+      bottom:12px;
+      width:37px;
+      height:37px;
+      border:0;
+      border-radius:50%;
+      background:var(--red);
+      color:white;
+      font-size:17px;
+      z-index:2;
+    }
+
+    .activity{
+      border:1px solid var(--line);
+      background:var(--card);
+      border-radius:18px;
+      overflow:hidden;
+    }
+
+    .activity-row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:13px 15px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .activity-row:last-child{
+      border-bottom:0;
+    }
+
+    .activity-row small{
+      color:var(--muted);
+    }
+
+    .win{color:var(--green)}
+    .loss{color:#ff6b73}
+
+    .bottom-nav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:60;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      background:rgba(11,13,18,.96);
+      backdrop-filter:blur(18px);
+      border-top:1px solid var(--line);
+      padding:7px 8px max(8px,env(safe-area-inset-bottom));
+    }
+
+    .nav{
+      border:0;
+      background:none;
+      color:#8d94a3;
+      padding:7px 3px;
+      font-size:10px;
+    }
+
+    .nav b{
+      display:block;
+      font-size:19px;
+      margin-bottom:3px;
+    }
+
+    .nav.active{color:white}
+
+    .sheet{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:-110%;
+      z-index:100;
+      padding:20px;
+      border-radius:23px 23px 0 0;
+      border-top:1px solid #303642;
+      background:#11151c;
+      transition:.27s ease;
+      box-shadow:0 -20px 60px rgba(0,0,0,.55);
+    }
+
+    .sheet.open{
+      bottom:0;
+    }
+
+    .sheet h3{
+      margin:0 0 14px;
+      font-size:21px;
+    }
+
+    .pick-card{
+      background:#181c24;
+      border:1px solid var(--line);
+      padding:13px;
+      border-radius:13px;
+    }
+
+    .pick-card small{
+      color:var(--muted);
+    }
+
+    .wager-row{
+      display:flex;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    .wager-row input{
+      flex:1;
+      min-width:0;
+      background:#0b0e13;
+      border:1px solid var(--line);
+      color:white;
+      border-radius:12px;
+      padding:13px;
+    }
+
+    .primary{
+      border:0;
+      border-radius:12px;
+      background:linear-gradient(145deg,var(--red),var(--red2));
+      color:white;
+      font-weight:900;
+      padding:13px 16px;
+    }
+
+    .secondary{
+      width:100%;
+      margin-top:8px;
+      padding:11px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#191d25;
+      color:#c5cad4;
+    }
+
+    .game-modal{
+      position:fixed;
+      inset:0;
+      z-index:120;
+      display:none;
+      align-items:flex-end;
+      background:rgba(0,0,0,.72);
+    }
+
+    .game-modal.open{
+      display:flex;
+    }
+
+    .game-panel{
+      width:100%;
+      background:#11151c;
+      border-radius:24px 24px 0 0;
+      border-top:1px solid #303642;
+      padding:20px;
+      min-height:330px;
+    }
+
+    .game-panel h2{
+      margin-top:0;
+    }
+
+    .big-result{
+      display:grid;
+      place-items:center;
+      min-height:135px;
+      font-size:58px;
+      background:#0d1016;
+      border:1px solid var(--line);
+      border-radius:18px;
+      margin:15px 0;
+    }
+
+    .game-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+
+    @media(min-width:780px){
+      .casino-grid{
+        grid-template-columns:repeat(4,1fr);
+      }
+
+      .desktop-grid{
+        display:grid;
+        grid-template-columns:1.4fr .85fr;
+        gap:20px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo">ULTIMATE<span>PLAYBET</span></div>
+<header class="topbar">
+  <div class="logo">
+    <div class="logo-mark">UPB</div>
+    ULTIMATE<span>PLAYBET</span>
+  </div>
+
+  <div class="balance-mini">
+    <small>PLAY BALANCE</small>
+    <strong id="topBalance">$1,000.00</strong>
+  </div>
 </header>
 
-<div class="container">
+<main class="wrap">
 
   <div class="notice">
-    <strong>SIMULATION ONLY</strong><br>
-    No deposits, withdrawals, prizes, or cash value.
+    <strong>SIMULATION ONLY</strong>
+    <span>No deposits • No withdrawals • No cash value</span>
   </div>
 
-  <div class="balance">
-    <h2>PLAY BALANCE</h2>
-    <div class="balance-value">$1,000.00</div>
-    <div class="simulation">Simulated dollars — no cash value</div>
-  </div>
+  <section class="hero">
+    <div class="eyebrow">ULTIMATE SPORTS & CASINO</div>
+    <h1>Your premium simulated gaming hub.</h1>
+    <p>
+      Play demo casino games, create simulated sportsbook picks and track your
+      play balance from one mobile-first experience.
+    </p>
 
-  <h1>Casino</h1>
+    <div class="stats">
+      <div class="stat">
+        <small>BALANCE</small>
+        <b id="heroBalance">$1,000</b>
+      </div>
 
-  <div class="games">
+      <div class="stat">
+        <small>OPEN PICK</small>
+        <b id="openPick">0</b>
+      </div>
 
-    <div class="game" onclick="alert('Blackjack coming soon')">
-      <div class="game-icon">♠️</div>
-      <h3>Blackjack</h3>
-      <p>Play blackjack</p>
-    </div>
-
-    <div class="game" onclick="alert('Roulette coming soon')">
-      <div class="game-icon">🎯</div>
-      <h3>Roulette</h3>
-      <p>Spin the wheel</p>
-    </div>
-
-    <div class="game" onclick="alert('Slots coming soon')">
-      <div class="game-icon">🎰</div>
-      <h3>Slots</h3>
-      <p>Try your luck</p>
-    </div>
-
-    <div class="game" onclick="alert('Poker coming soon')">
-      <div class="game-icon">🃏</div>
-      <h3>Poker</h3>
-      <p>Play poker</p>
-    </div>
-
-  </div>
-
-  <div class="sports">
-
-    <h1>Sportsbook</h1>
-
-    <div class="match">
-      <div class="match-title">Football</div>
-
-      <div class="odds">
-        <button class="odd" onclick="selectBet('Home -110')">
-          Home<br>-110
-        </button>
-
-        <button class="odd" onclick="selectBet('Spread -105')">
-          Spread<br>-105
-        </button>
-
-        <button class="odd" onclick="selectBet('Away +120')">
-          Away<br>+120
-        </button>
+      <div class="stat">
+        <small>ACTIVITY</small>
+        <b id="activityTotal">0</b>
       </div>
     </div>
+  </section>
 
-    <div class="match">
-      <div class="match-title">Basketball</div>
+  <div class="desktop-grid">
 
-      <div class="odds">
-        <button class="odd" onclick="selectBet('Home -125')">
-          Home<br>-125
-        </button>
-
-        <button class="odd" onclick="selectBet('Spread -110')">
-          Spread<br>-110
-        </button>
-
-        <button class="odd" onclick="selectBet('Away +105')">
-          Away<br>+105
-        </button>
+    <section>
+      <div class="section-head">
+        <h2>Sportsbook</h2>
+        <span>Featured markets</span>
       </div>
-    </div>
+
+      <div class="sport-tabs">
+        <button class="active">Featured</button>
+        <button>Football</button>
+        <button>Basketball</button>
+        <button>Baseball</button>
+        <button>Golf</button>
+      </div>
+
+      <div class="event">
+        <div class="event-top">
+          <div>
+            <div class="league">PRO FOOTBALL</div>
+            <strong>Carolina vs Atlanta</strong>
+          </div>
+          <div class="today">TODAY</div>
+        </div>
+
+        <div class="teams">
+          <div class="team">
+            <div class="team-left">
+              <div class="badge">CAR</div>
+              Carolina
+            </div>
+            <strong>-2.5</strong>
+          </div>
+
+          <div class="team">
+            <div class="team-left">
+              <div class="badge">ATL</div>
+              Atlanta
+            </div>
+            <strong>+2.5</strong>
+          </div>
+        </div>
+
+        <div class="odds">
+          <button class="odd" onclick="choosePick(this,'Carolina -2.5','-110')">
+            <small>SPREAD</small>
+            -2.5 (-110)
+          </button>
+
+          <button class="odd" onclick="choosePick(this,'Over 44.5','-105')">
+            <small>TOTAL</small>
+            O 44.5
+          </button>
+
+          <button class="odd" onclick="choosePick(this,'Carolina ML','-135')">
+            <small>MONEYLINE</small>
+            -135
+          </button>
+        </div>
+      </div>
+
+      <div class="event">
+        <div class="event-top">
+          <div>
+            <div class="league">PRO BASKETBALL</div>
+            <strong>Charlotte vs Miami</strong>
+          </div>
+          <div class="today">TONIGHT</div>
+        </div>
+
+        <div class="teams">
+          <div class="team">
+            <div class="team-left">
+              <div class="badge">CHA</div>
+              Charlotte
+            </div>
+            <strong>+4.5</strong>
+          </div>
+
+          <div class="team">
+            <div class="team-left">
+              <div class="badge">MIA</div>
+              Miami
+            </div>
+            <strong>-4.5</strong>
+          </div>
+        </div>
+
+        <div class="odds">
+          <button class="odd" onclick="choosePick(this,'Charlotte +4.5','-110')">
+            <small>SPREAD</small>
+            +4.5
+          </button>
+
+          <button class="odd" onclick="choosePick(this,'Under 218.5','-110')">
+            <small>TOTAL</small>
+            U 218.5
+          </button>
+
+          <button class="odd" onclick="choosePick(this,'Miami ML','-180')">
+            <small>MONEYLINE</small>
+            -180
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Casino</h2>
+        <span>Demo games</span>
+      </div>
+
+      <div class="casino-grid">
+        <div class="game">
+          <div class="game-icon">♠️</div>
+          <h3>Blackjack</h3>
+          <p>Quick demo round</p>
+          <button class="play" onclick="openGame('Blackjack','♠️')">▶</button>
+        </div>
+
+        <div class="game">
+          <div class="game-icon">🎯</div>
+          <h3>Roulette</h3>
+          <p>Red / black demo</p>
+          <button class="play" onclick="openGame('Roulette','🎯')">▶</button>
+        </div>
+
+        <div class="game">
+          <div class="game-icon">🎰</div>
+          <h3>Slots</h3>
+          <p>Three-reel demo</p>
+          <button class="play" onclick="openGame('Slots','🎰')">▶</button>
+        </div>
+
+        <div class="game">
+          <div class="game-icon">🃏</div>
+          <h3>Poker</h3>
+          <p>Quick hand demo</p>
+          <button class="play" onclick="openGame('Poker','🃏')">▶</button>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2>Recent Activity</h2>
+        <span id="recentCount">None yet</span>
+      </div>
+
+      <div class="activity" id="activityList">
+        <div class="activity-row">
+          <div>
+            <strong>No activity yet</strong><br>
+            <small>Your simulated plays appear here.</small>
+          </div>
+        </div>
+      </div>
+    </section>
 
   </div>
 
+</main>
+
+<nav class="bottom-nav">
+  <button class="nav active"><b>⌂</b>Home</button>
+  <button class="nav"><b>◉</b>Sports</button>
+  <button class="nav"><b>♣</b>Casino</button>
+  <button class="nav"><b>☰</b>Account</button>
+</nav>
+
+<div class="sheet" id="betSheet">
+  <h3>Bet Slip</h3>
+
+  <div class="pick-card" id="pickInfo">
+    No selection
+  </div>
+
+  <div class="wager-row">
+    <input
+      id="betAmount"
+      type="number"
+      min="1"
+      max="1000"
+      value="25"
+      placeholder="Wager"
+    />
+    <button class="primary" onclick="placePick()">Place</button>
+  </div>
+
+  <button class="secondary" onclick="closeBetSheet()">Cancel</button>
 </div>
 
-<footer>
-  UltimatePlayBet<br>
-  Entertainment simulation only. All displayed balances are virtual and
-  have no monetary value.
-</footer>
+<div class="game-modal" id="gameModal">
+  <div class="game-panel">
+    <h2 id="gameTitle">Casino Game</h2>
+
+    <div class="big-result" id="gameResult">🎰</div>
+
+    <div class="game-actions">
+      <button class="secondary" onclick="closeGame()">Close</button>
+      <button class="primary" onclick="playCurrentGame()">Play $25</button>
+    </div>
+
+    <p style="color:#9198a8;font-size:11px;text-align:center;margin-top:14px;">
+      Simulated play only. No cash value.
+    </p>
+  </div>
+</div>
 
 <script>
-  function selectBet(bet) {
-    alert("Selected: " + bet + "\n\nSimulation only — no real-money wager.");
+  let balance = 1000;
+  let selectedPick = null;
+  let activities = [];
+  let activeGame = "";
+
+  function money(value){
+    return "$" + Number(value).toFixed(2);
   }
+
+  function refresh(){
+    document.getElementById("topBalance").textContent = money(balance);
+    document.getElementById("heroBalance").textContent = "$" + Math.round(balance);
+    document.getElementById("activityTotal").textContent = activities.length;
+  }
+
+  function choosePick(button,name,odds){
+    document.querySelectorAll(".odd").forEach(btn => {
+      btn.classList.remove("selected");
+    });
+
+    button.classList.add("selected");
+
+    selectedPick = {name,odds};
+
+    document.getElementById("pickInfo").innerHTML =
+      "<strong>" + name + "</strong><br>" +
+      "<small>Odds " + odds + " • simulated wager</small>";
+
+    document.getElementById("openPick").textContent = "1";
+    document.getElementById("betSheet").classList.add("open");
+  }
+
+  function closeBetSheet(){
+    document.getElementById("betSheet").classList.remove("open");
+  }
+
+  function placePick(){
+    if(!selectedPick) return;
+
+    const amount = Number(document.getElementById("betAmount").value);
+
+    if(!amount || amount < 1){
+      alert("Enter a simulated wager amount.");
+      return;
+    }
+
+    if(amount > balance){
+      alert("Not enough simulated balance.");
+      return;
+    }
+
+    balance -= amount;
+
+    addActivity(
+      selectedPick.name,
+      "Sportsbook simulation",
+      "-" + money(amount),
+      false
+    );
+
+    selectedPick = null;
+
+    document.querySelectorAll(".odd").forEach(btn => {
+      btn.classList.remove("selected");
+    });
+
+    document.getElementById("openPick").textContent = "0";
+
+    closeBetSheet();
+    refresh();
+  }
+
+  function openGame(game,icon){
+    activeGame = game;
+    document.getElementById("gameTitle").textContent = game;
+    document.getElementById("gameResult").textContent = icon;
+    document.getElementById("gameModal").classList.add("open");
+  }
+
+  function closeGame(){
+    document.getElementById("gameModal").classList.remove("open");
+  }
+
+  function playCurrentGame(){
+    const wager = 25;
+
+    if(balance < wager){
+      alert("Not enough simulated balance.");
+      return;
+    }
+
+    balance -= wager;
+
+    const win = Math.random() < 0.46;
+
+    if(activeGame === "Slots"){
+      const symbols = ["🍒","7️⃣","💎","⭐","🍋"];
+      const a = symbols[Math.floor(Math.random()*symbols.length)];
+      const b = symbols[Math.floor(Math.random()*symbols.length)];
+      const c = symbols[Math.floor(Math.random()*symbols.length)];
+
+      document.getElementById("gameResult").textContent =
+        a + " " + b + " " + c;
+    }
+
+    else if(activeGame === "Roulette"){
+      document.getElementById("gameResult").textContent =
+        Math.random() < .5 ? "🔴" : "⚫";
+    }
+
+    else if(activeGame === "Blackjack"){
+      document.getElementById("gameResult").textContent =
+        win ? "21 ✓" : "Dealer Wins";
+    }
+
+    else if(activeGame === "Poker"){
+      document.getElementById("gameResult").textContent =
+        win ? "♠ K  ♠ A" : "♣ 8  ♦ 4";
+    }
+
+    if(win){
+      balance += wager * 2;
+
+      addActivity(
+        activeGame,
+        "Casino demo win",
+        "+" + money(wager),
+        true
+      );
+    }else{
+      addActivity(
+        activeGame,
+        "Casino demo loss",
+        "-" + money(wager),
+        false
+      );
+    }
+
+    refresh();
+  }
+
+  function addActivity(title,subtitle,amount,isWin){
+    activities.unshift({
+      title,
+      subtitle,
+      amount,
+      isWin
+    });
+
+    const html = activities.slice(0,7).map(item => `
+      <div class="activity-row">
+        <div>
+          <strong>${item.title}</strong><br>
+          <small>${item.subtitle}</small>
+        </div>
+
+        <strong class="${item.isWin ? "win" : "loss"}">
+          ${item.amount}
+        </strong>
+      </div>
+    `).join("");
+
+    document.getElementById("activityList").innerHTML = html;
+    document.getElementById("recentCount").textContent =
+      activities.length + " recent";
+  }
+
+  refresh();
 </script>
 
 </body>
