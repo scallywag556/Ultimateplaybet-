@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UltimatePlayBet</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #0b0b0d;
+      color: white;
+    }
+
+    header {
+      background: #151519;
+      padding: 18px 20px;
+      border-bottom: 2px solid #e53935;
+      position: sticky;
+      top: 0;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #e53935;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .notice {
+      background: #202025;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .notice strong {
+      color: #e53935;
+    }
+
+    .balance {
+      background: linear-gradient(135deg, #202025, #111);
+      padding: 22px;
+      border-radius: 14px;
+      margin-bottom: 25px;
+    }
+
+    .balance h2 {
+      font-size: 16px;
+      color: #aaa;
+      margin-bottom: 7px;
+    }
+
+    .balance-value {
+      font-size: 34px;
+      font-weight: bold;
+    }
+
+    h1 {
+      margin-bottom: 18px;
+    }
+
+    .games {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .game {
+      background: #19191e;
+      border: 1px solid #303038;
+      border-radius: 14px;
+      padding: 25px 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .game:hover {
+      transform: translateY(-3px);
+      border-color: #e53935;
+    }
+
+    .game-icon {
+      font-size: 38px;
+      margin-bottom: 12px;
+    }
+
+    .game h3 {
+      margin-bottom: 7px;
+    }
+
+    .game p {
+      color: #999;
+      font-size: 13px;
+    }
+
+    .sports {
+      margin-top: 35px;
+    }
+
+    .match {
+      background: #19191e;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      padding: 17px;
+    }
+
+    .match-title {
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .odds {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .odd {
+      background: #292930;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      padding: 12px 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .odd:hover {
+      background: #e53935;
+    }
+
+    footer {
+      color: #777;
+      text-align: center;
+      padding: 35px 20px;
+      font-size: 13px;
+    }
+
+    .simulation {
+      color: #aaa;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">ULTIMATE<span>PLAYBET</span></div>
+</header>
+
+<div class="container">
+
+  <div class="notice">
+    <strong>SIMULATION ONLY</strong><br>
+    No deposits, withdrawals, prizes, or cash value.
+  </div>
+
+  <div class="balance">
+    <h2>PLAY BALANCE</h2>
+    <div class="balance-value">$1,000.00</div>
+    <div class="simulation">Simulated dollars — no cash value</div>
+  </div>
+
+  <h1>Casino</h1>
+
+  <div class="games">
+
+    <div class="game" onclick="alert('Blackjack coming soon')">
+      <div class="game-icon">♠️</div>
+      <h3>Blackjack</h3>
+      <p>Play blackjack</p>
+    </div>
+
+    <div class="game" onclick="alert('Roulette coming soon')">
+      <div class="game-icon">🎯</div>
+      <h3>Roulette</h3>
+      <p>Spin the wheel</p>
+    </div>
+
+    <div class="game" onclick="alert('Slots coming soon')">
+      <div class="game-icon">🎰</div>
+      <h3>Slots</h3>
+      <p>Try your luck</p>
+    </div>
+
+    <div class="game" onclick="alert('Poker coming soon')">
+      <div class="game-icon">🃏</div>
+      <h3>Poker</h3>
+      <p>Play poker</p>
+    </div>
+
+  </div>
+
+  <div class="sports">
+
+    <h1>Sportsbook</h1>
+
+    <div class="match">
+      <div class="match-title">Football</div>
+
+      <div class="odds">
+        <button class="odd" onclick="selectBet('Home -110')">
+          Home<br>-110
+        </button>
+
+        <button class="odd" onclick="selectBet('Spread -105')">
+          Spread<br>-105
+        </button>
+
+        <button class="odd" onclick="selectBet('Away +120')">
+          Away<br>+120
+        </button>
+      </div>
+    </div>
+
+    <div class="match">
+      <div class="match-title">Basketball</div>
+
+      <div class="odds">
+        <button class="odd" onclick="selectBet('Home -125')">
+          Home<br>-125
+        </button>
+
+        <button class="odd" onclick="selectBet('Spread -110')">
+          Spread<br>-110
+        </button>
+
+        <button class="odd" onclick="selectBet('Away +105')">
+          Away<br>+105
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  UltimatePlayBet<br>
+  Entertainment simulation only. All displayed balances are virtual and
+  have no monetary value.
+</footer>
+
+<script>
+  function selectBet(bet) {
+    alert("Selected: " + bet + "\n\nSimulation only — no real-money wager.");
+  }
+</script>
+
+</body>
+</html>
