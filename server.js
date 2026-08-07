@@ -47,7 +47,7 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname)));
+app.app.use(express.static(path.join(__dirname, "public")));
 
 function hashPassword(password, salt = crypto.randomBytes(16).toString("hex")) {
   const hash = crypto.scryptSync(password, salt, 64).toString("hex");
@@ -635,7 +635,7 @@ app.get("/api/admin/activity", requireAdmin, async (req, res) => {
   }
 });
 
-app.get("*", (req, res) => {
+app.get("*", (req, res) => {res.sendFile(path.join(__dirname, "public", "index.html"));
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
