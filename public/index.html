@@ -1,2804 +1,1440 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <meta name="theme-color" content="#080a0f" />
-  <title>Ultimate PlayBet</title>
-
-  <style>
-    :root{
-      --bg:#07090d;
-      --panel:#10141c;
-      --panel2:#151a24;
-      --panel3:#1b2130;
-      --line:#2a3140;
-      --text:#f7f8fb;
-      --muted:#949bab;
-      --red:#ef3e45;
-      --red2:#b91f28;
-      --green:#39d07f;
-      --yellow:#ffd166;
-      --orange:#ff9f43;
-      --shadow:0 14px 45px rgba(0,0,0,.35);
-      --radius:22px;
-    }
-
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
-
-    html,body{
-      min-height:100%;
-      background:var(--bg);
-      color:var(--text);
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-    }
-
-    body{
-      padding-bottom:92px;
-    }
-
-    button,input,select{
-      font:inherit;
-    }
-
-    button{
-      cursor:pointer;
-    }
-
-    .hidden{
-      display:none!important;
-    }
-
-    .app{
-      width:100%;
-      max-width:1080px;
-      margin:auto;
-    }
-
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:50;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      padding:18px 20px;
-      background:rgba(7,9,13,.94);
-      border-bottom:1px solid var(--line);
-      backdrop-filter:blur(16px);
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width:0;
-    }
-
-    .logo{
-      width:52px;
-      height:52px;
-      border-radius:16px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:900;
-      background:linear-gradient(145deg,var(--red),var(--red2));
-      box-shadow:0 0 30px rgba(239,62,69,.22);
-    }
-
-    .brand-name{
-      font-size:clamp(18px,5vw,30px);
-      font-weight:900;
-      letter-spacing:-.8px;
-      white-space:nowrap;
-    }
-
-    .brand-name span{
-      color:var(--red);
-    }
-
-    .balance-top{
-      text-align:right;
-      flex-shrink:0;
-    }
-
-    .balance-label{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:2px;
-      color:var(--muted);
-      font-weight:800;
-    }
-
-    .balance-value{
-      margin-top:4px;
-      font-size:23px;
-      font-weight:900;
-    }
-
-    .page{
-      display:none;
-      padding:22px 18px 120px;
-    }
-
-    .page.active{
-      display:block;
-    }
-
-    .notice{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      gap:8px;
-      padding:14px 16px;
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:var(--panel);
-      color:var(--muted);
-      font-size:13px;
-      margin-bottom:22px;
-    }
-
-    .notice strong{
-      color:var(--yellow);
-    }
-
-    .hero{
-      position:relative;
-      overflow:hidden;
-      padding:28px;
-      min-height:320px;
-      border:1px solid var(--line);
-      border-radius:28px;
-      background:
-        radial-gradient(circle at 82% 10%,rgba(239,62,69,.25),transparent 36%),
-        linear-gradient(145deg,#28171c,#111722 55%,#0e1219);
-      box-shadow:var(--shadow);
-    }
-
-    .eyebrow{
-      color:var(--red);
-      font-weight:900;
-      font-size:13px;
-      letter-spacing:3px;
-      text-transform:uppercase;
-    }
-
-    .hero h1{
-      max-width:620px;
-      margin-top:15px;
-      font-size:clamp(37px,8vw,62px);
-      line-height:.98;
-      letter-spacing:-2.4px;
-    }
-
-    .hero p{
-      color:#b3bac7;
-      max-width:650px;
-      margin-top:18px;
-      line-height:1.65;
-      font-size:16px;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      margin-top:28px;
-    }
-
-    .stat{
-      background:rgba(4,7,12,.55);
-      border:1px solid var(--line);
-      border-radius:17px;
-      padding:16px;
-    }
-
-    .stat-label{
-      font-size:10px;
-      text-transform:uppercase;
-      letter-spacing:1.3px;
-      color:var(--muted);
-    }
-
-    .stat-value{
-      margin-top:8px;
-      font-weight:900;
-      font-size:19px;
-    }
-
-    .section-head{
-      display:flex;
-      align-items:end;
-      justify-content:space-between;
-      gap:16px;
-      margin:34px 0 16px;
-    }
-
-    .section-head h2{
-      font-size:31px;
-      letter-spacing:-1px;
-    }
-
-    .section-head span{
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .quick-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:10px;
-    }
-
-    .quick{
-      border:1px solid var(--line);
-      background:var(--panel);
-      color:var(--text);
-      padding:17px 10px;
-      border-radius:18px;
-      text-align:center;
-      transition:.2s;
-    }
-
-    .quick:active{
-      transform:scale(.98);
-    }
-
-    .quick-icon{
-      font-size:25px;
-      display:block;
-      margin-bottom:8px;
-    }
-
-    .quick small{
-      color:var(--muted);
-      display:block;
-      margin-top:4px;
-    }
-
-    .sport-tabs,
-    .filter-tabs{
-      display:flex;
-      gap:9px;
-      overflow-x:auto;
-      padding-bottom:4px;
-      scrollbar-width:none;
-    }
-
-    .pill{
-      flex-shrink:0;
-      border:1px solid var(--line);
-      background:var(--panel);
-      color:#b7bdca;
-      padding:11px 18px;
-      border-radius:999px;
-    }
-
-    .pill.active{
-      background:var(--red);
-      border-color:var(--red);
-      color:white;
-      font-weight:800;
-    }
-
-    .markets{
-      display:grid;
-      gap:15px;
-      margin-top:18px;
-    }
-
-    .market{
-      border:1px solid var(--line);
-      background:var(--panel);
-      border-radius:22px;
-      overflow:hidden;
-    }
-
-    .market-head{
-      padding:18px;
-      border-bottom:1px solid var(--line);
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-    }
-
-    .market-league{
-      font-size:10px;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:1.3px;
-    }
-
-    .market-title{
-      margin-top:6px;
-      font-weight:800;
-      font-size:17px;
-    }
-
-    .live{
-      color:var(--green);
-      font-size:11px;
-      font-weight:900;
-      text-transform:uppercase;
-    }
-
-    .teams{
-      padding:10px 18px 4px;
-    }
-
-    .team-row{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:11px 0;
-    }
-
-    .team-badge{
-      width:38px;
-      height:38px;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:#222838;
-      font-size:11px;
-      font-weight:900;
-    }
-
-    .team-name{
-      flex:1;
-      font-weight:800;
-    }
-
-    .team-line{
-      font-weight:800;
-    }
-
-    .odds-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:8px;
-      padding:14px 18px 18px;
-    }
-
-    .odd{
-      border:1px solid var(--line);
-      background:#191e28;
-      color:white;
-      border-radius:14px;
-      padding:13px 8px;
-      text-align:center;
-    }
-
-    .odd small{
-      color:var(--muted);
-      font-size:9px;
-      text-transform:uppercase;
-      display:block;
-      margin-bottom:5px;
-    }
-
-    .odd.selected{
-      background:rgba(239,62,69,.18);
-      border-color:var(--red);
-    }
-
-    .game-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:13px;
-    }
-
-    .game-card{
-      position:relative;
-      min-height:185px;
-      padding:20px;
-      border-radius:22px;
-      overflow:hidden;
-      border:1px solid var(--line);
-      background:
-        radial-gradient(circle at 100% 0,rgba(239,62,69,.16),transparent 42%),
-        linear-gradient(145deg,#161b25,#0e1117);
-    }
-
-    .game-icon{
-      font-size:48px;
-    }
-
-    .game-card h3{
-      margin-top:24px;
-      font-size:22px;
-    }
-
-    .game-card p{
-      color:var(--muted);
-      margin-top:5px;
-    }
-
-    .play-btn{
-      position:absolute;
-      right:18px;
-      bottom:18px;
-      width:52px;
-      height:52px;
-      border:none;
-      border-radius:50%;
-      background:var(--red);
-      color:white;
-      font-size:20px;
-    }
-
-    .card{
-      border:1px solid var(--line);
-      background:var(--panel);
-      border-radius:22px;
-      padding:20px;
-    }
-
-    .bet-card{
-      margin-bottom:12px;
-    }
-
-    .bet-top{
-      display:flex;
-      align-items:start;
-      justify-content:space-between;
-      gap:15px;
-    }
-
-    .status{
-      font-size:10px;
-      font-weight:900;
-      padding:7px 10px;
-      border-radius:999px;
-      text-transform:uppercase;
-    }
-
-    .status.pending{
-      color:#ffca56;
-      background:rgba(255,202,86,.12);
-    }
-
-    .status.won{
-      color:var(--green);
-      background:rgba(57,208,127,.12);
-    }
-
-    .status.lost{
-      color:#ff7077;
-      background:rgba(239,62,69,.12);
-    }
-
-    .bet-details{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:8px;
-      margin-top:15px;
-    }
-
-    .mini{
-      padding:12px;
-      border:1px solid var(--line);
-      border-radius:13px;
-      background:#0d1118;
-    }
-
-    .mini small{
-      color:var(--muted);
-      display:block;
-      margin-bottom:5px;
-      font-size:9px;
-      text-transform:uppercase;
-    }
-
-    .account-head{
-      border-radius:24px;
-      padding:24px;
-      background:linear-gradient(135deg,#54171c,#281116);
-      margin-bottom:18px;
-    }
-
-    .profile-line{
-      display:flex;
-      align-items:center;
-      gap:15px;
-    }
-
-    .avatar{
-      width:62px;
-      height:62px;
-      border-radius:50%;
-      border:1px solid var(--red);
-      background:#202532;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:900;
-      font-size:20px;
-    }
-
-    .profile-line h2{
-      font-size:23px;
-    }
-
-    .profile-line p{
-      color:#c3c6ce;
-      margin-top:4px;
-    }
-
-    .account-list{
-      overflow:hidden;
-      border:1px solid var(--line);
-      border-radius:19px;
-      background:var(--panel);
-    }
-
-    .account-item{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:15px;
-      padding:17px;
-      border-bottom:1px solid var(--line);
-    }
-
-    .account-item:last-child{
-      border-bottom:0;
-    }
-
-    .account-item span:first-child{
-      color:#c0c6d2;
-    }
-
-    .positive{
-      color:var(--green)!important;
-    }
-
-    .negative{
-      color:#ff666d!important;
-    }
-
-    .btn{
-      width:100%;
-      border:none;
-      border-radius:14px;
-      padding:15px 18px;
-      background:var(--red);
-      color:white;
-      font-weight:900;
-    }
-
-    .btn.secondary{
-      background:var(--panel2);
-      border:1px solid var(--line);
-    }
-
-    .btn.green{
-      background:#15884d;
-    }
-
-    .btn.warn{
-      background:#9f6713;
-    }
-
-    .btn.danger{
-      background:#a51f26;
-    }
-
-    .btn.small{
-      width:auto;
-      padding:9px 13px;
-      font-size:12px;
-    }
-
-    .bottom-nav{
-      position:fixed;
-      left:0;
-      right:0;
-      bottom:0;
-      z-index:100;
-      height:83px;
-      background:rgba(7,9,13,.97);
-      backdrop-filter:blur(18px);
-      border-top:1px solid var(--line);
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-    }
-
-    .nav-btn{
-      border:none;
-      background:transparent;
-      color:#8f96a5;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      gap:6px;
-    }
-
-    .nav-btn.active{
-      color:var(--red);
-    }
-
-    .nav-icon{
-      font-size:21px;
-    }
-
-    .nav-btn span:last-child{
-      font-size:11px;
-    }
-
-    .modal{
-      position:fixed;
-      inset:0;
-      z-index:200;
-      background:rgba(0,0,0,.78);
-      backdrop-filter:blur(10px);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-    }
-
-    .modal-box{
-      width:100%;
-      max-width:470px;
-      max-height:90vh;
-      overflow:auto;
-      background:#0d1118;
-      border:1px solid var(--line);
-      border-radius:25px;
-      box-shadow:var(--shadow);
-      padding:24px;
-    }
-
-    .modal-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:23px;
-    }
-
-    .modal-head h2{
-      font-size:26px;
-    }
-
-    .close{
-      width:38px;
-      height:38px;
-      border-radius:50%;
-      border:1px solid var(--line);
-      background:var(--panel);
-      color:white;
-      font-size:18px;
-    }
-
-    .field{
-      margin-bottom:14px;
-    }
-
-    .field label{
-      display:block;
-      color:#afb6c3;
-      font-size:12px;
-      margin-bottom:7px;
-    }
-
-    .field input,
-    .field select{
-      width:100%;
-      padding:15px;
-      background:#080b10;
-      border:1px solid var(--line);
-      border-radius:13px;
-      color:white;
-      outline:none;
-    }
-
-    .field input:focus{
-      border-color:var(--red);
-    }
-
-    .auth-switch{
-      text-align:center;
-      color:var(--muted);
-      margin-top:16px;
-      font-size:13px;
-    }
-
-    .link-btn{
-      border:none;
-      background:none;
-      color:var(--red);
-      font-weight:800;
-    }
-
-    .betslip{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:94px;
-      z-index:90;
-      width:calc(100% - 28px);
-      max-width:600px;
-      background:#0d1118;
-      border:1px solid var(--line);
-      border-radius:22px;
-      padding:17px;
-      box-shadow:0 18px 60px rgba(0,0,0,.6);
-    }
-
-    .betslip-title{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:12px;
-    }
-
-    .betslip-selection{
-      color:#c4cad5;
-      font-size:13px;
-      margin-bottom:12px;
-    }
-
-    .bet-entry{
-      display:flex;
-      gap:10px;
-    }
-
-    .bet-entry input{
-      flex:1;
-      min-width:0;
-      border:1px solid var(--line);
-      background:#070a0f;
-      color:white;
-      border-radius:13px;
-      padding:14px;
-    }
-
-    .bet-entry button{
-      width:130px;
-      border:none;
-      border-radius:13px;
-      background:var(--red);
-      color:white;
-      font-weight:900;
-    }
-
-    .admin-shell{
-      display:grid;
-      grid-template-columns:220px 1fr;
-      gap:18px;
-    }
-
-    .admin-sidebar{
-      height:max-content;
-      position:sticky;
-      top:95px;
-      border:1px solid var(--line);
-      border-radius:20px;
-      background:var(--panel);
-      padding:12px;
-    }
-
-    .admin-title{
-      color:var(--green);
-      padding:13px;
-      font-weight:900;
-    }
-
-    .admin-nav-btn{
-      width:100%;
-      text-align:left;
-      border:none;
-      border-radius:12px;
-      padding:13px;
-      background:transparent;
-      color:#b8bfcb;
-    }
-
-    .admin-nav-btn.active{
-      background:rgba(239,62,69,.14);
-      color:#ff6269;
-    }
-
-    .admin-main{
-      min-width:0;
-    }
-
-    .admin-stats{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      margin-bottom:18px;
-    }
-
-    .admin-table-wrap{
-      overflow:auto;
-      border:1px solid var(--line);
-      border-radius:18px;
-    }
-
-    table{
-      width:100%;
-      min-width:760px;
-      border-collapse:collapse;
-      background:var(--panel);
-    }
-
-    th,td{
-      padding:14px;
-      text-align:left;
-      border-bottom:1px solid var(--line);
-      font-size:13px;
-    }
-
-    th{
-      color:var(--muted);
-      text-transform:uppercase;
-      font-size:10px;
-      letter-spacing:1px;
-    }
-
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-    }
-
-    .activity-row{
-      padding:14px 0;
-      border-bottom:1px solid var(--line);
-    }
-
-    .activity-row:last-child{
-      border-bottom:0;
-    }
-
-    .activity-row small{
-      display:block;
-      color:var(--muted);
-      margin-top:4px;
-    }
-
-    .empty{
-      color:var(--muted);
-      text-align:center;
-      padding:40px 20px;
-      border:1px dashed var(--line);
-      border-radius:18px;
-    }
-
-    .toast{
-      position:fixed;
-      z-index:500;
-      left:50%;
-      bottom:105px;
-      transform:translateX(-50%);
-      width:calc(100% - 36px);
-      max-width:500px;
-      padding:14px 16px;
-      border-radius:14px;
-      background:#161c27;
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-      text-align:center;
-    }
-
-    @media(max-width:760px){
-      .brand-name{
-        font-size:20px;
-      }
-
-      .logo{
-        width:45px;
-        height:45px;
-      }
-
-      .balance-value{
-        font-size:18px;
-      }
-
-      .stats{
-        grid-template-columns:repeat(3,1fr);
-      }
-
-      .quick-grid{
-        grid-template-columns:repeat(2,1fr);
-      }
-
-      .admin-shell{
-        display:block;
-      }
-
-      .admin-sidebar{
-        position:static;
-        margin-bottom:15px;
-      }
-
-      .admin-stats{
-        grid-template-columns:1fr;
-      }
-    }
-
-    @media(max-width:430px){
-      .topbar{
-        padding:15px 14px;
-      }
-
-      .brand-name{
-        font-size:17px;
-      }
-
-      .balance-label{
-        font-size:8px;
-      }
-
-      .balance-value{
-        font-size:16px;
-      }
-
-      .page{
-        padding-left:13px;
-        padding-right:13px;
-      }
-
-      .hero{
-        padding:23px 19px;
-      }
-
-      .stats{
-        gap:7px;
-      }
-
-      .stat{
-        padding:12px 9px;
-      }
-
-      .stat-value{
-        font-size:16px;
-      }
-
-      .section-head h2{
-        font-size:27px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>UltimatePlayBet</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #05070a;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+  font-family: inherit;
+}
+
+header {
+  height: 72px;
+  background: #080b0f;
+  border-bottom: 1px solid #242b34;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 900;
+  flex: 1;
+}
+
+.logo span {
+  color: #ed323b;
+}
+
+.balance {
+  text-align: right;
+}
+
+.balance small {
+  display: block;
+  color: #8e97a3;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.balance strong {
+  font-size: 20px;
+}
+
+.notice {
+  padding: 9px;
+  text-align: center;
+  background: #10151b;
+  color: #9da6b1;
+  font-size: 12px;
+  border-bottom: 1px solid #252d36;
+}
+
+.notice strong {
+  color: #ff424b;
+}
+
+.main-layout {
+  max-width: 1500px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 190px 1fr 320px;
+}
+
+.sidebar {
+  min-height: calc(100vh - 100px);
+  border-right: 1px solid #202730;
+  padding: 15px 10px;
+}
+
+.sidebar h4 {
+  color: #ef343d;
+  margin: 10px;
+}
+
+.sport-button {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #c8ced6;
+  text-align: left;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.sport-button.active,
+.sport-button:hover {
+  background: #171d25;
+  color: white;
+}
+
+.content {
+  padding: 16px;
+}
+
+.hero {
+  background:
+    linear-gradient(90deg, rgba(14,18,24,.97), rgba(80,15,20,.82));
+  border: 1px solid #27303b;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 15px;
+}
+
+.hero h1 {
+  margin: 0 0 8px;
+  font-size: 29px;
+}
+
+.hero p {
+  margin: 0;
+  color: #b3bbc5;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 14px;
+}
+
+.tab {
+  border: 1px solid #2b333d;
+  background: #11161d;
+  color: #c4cbd3;
+  padding: 10px 15px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #ed323b;
+  color: white;
+  border-color: #ed323b;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-header h2 {
+  font-size: 18px;
+}
+
+.refresh {
+  background: #151b23;
+  border: 1px solid #2c3540;
+  color: white;
+  padding: 8px 11px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.game {
+  background: #0d1116;
+  border: 1px solid #242c35;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 11px;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid #202731;
+  color: #929ba7;
+  font-size: 12px;
+}
+
+.live {
+  color: #ff4049;
+  font-weight: bold;
+}
+
+.teams {
+  padding: 12px;
+}
+
+.team {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0;
+  font-size: 16px;
+}
+
+.score {
+  color: #ffc132;
+  font-weight: bold;
+}
+
+.market-labels,
+.market-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.market-labels {
+  padding: 0 12px 5px;
+  color: #7e8995;
+  text-align: center;
+  font-size: 11px;
+}
+
+.market-row {
+  padding: 0 12px 10px;
+}
+
+.odd {
+  border: 1px solid #2a3540;
+  background: #18212a;
+  color: white;
+  padding: 11px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.odd:hover {
+  background: #273544;
+}
+
+.odd.selected {
+  background: #ed323b;
+  border-color: #ed323b;
+}
+
+.betslip {
+  min-height: calc(100vh - 100px);
+  border-left: 1px solid #202730;
+  background: #080b0f;
+  padding: 16px 12px;
+}
+
+.betslip h2 {
+  margin-top: 0;
+}
+
+.empty {
+  color: #7f8995;
+  text-align: center;
+  padding: 28px 10px;
+}
+
+.pick {
+  background: #11171e;
+  border: 1px solid #29323d;
+  border-radius: 8px;
+  padding: 11px;
+  margin-bottom: 9px;
+}
+
+.pick-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pick small {
+  color: #8f99a5;
+}
+
+.remove {
+  border: none;
+  background: transparent;
+  color: #bbb;
+  cursor: pointer;
+}
+
+.wager {
+  width: 100%;
+  background: #11171e;
+  border: 1px solid #303a46;
+  color: white;
+  padding: 13px;
+  border-radius: 7px;
+  font-size: 17px;
+}
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  margin: 13px 0;
+}
+
+.place {
+  width: 100%;
+  border: none;
+  background: #ed323b;
+  color: white;
+  padding: 15px;
+  border-radius: 7px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.place:disabled {
+  opacity: .4;
+}
+
+.history {
+  border-top: 1px solid #28313b;
+  padding-top: 15px;
+  margin-top: 20px;
+}
+
+.history-item {
+  background: #11171e;
+  padding: 10px;
+  border-radius: 7px;
+  margin-bottom: 7px;
+  font-size: 13px;
+}
+
+.loading {
+  text-align: center;
+  color: #8b95a1;
+  padding: 40px;
+}
+
+.error {
+  background: #32151a;
+  border: 1px solid #713039;
+  color: #ffb1b5;
+  padding: 14px;
+  border-radius: 8px;
+}
+
+@media (max-width: 950px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .betslip {
+    border-left: none;
+    border-top: 1px solid #202730;
+    min-height: auto;
+  }
+
+  .content {
+    padding: 11px;
+  }
+
+  .logo {
+    font-size: 19px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<div class="app">
+<header>
+  <div class="logo">
+    ULTIMATE<span>PLAYBET</span>
+  </div>
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">UPB</div>
-      <div class="brand-name">ULTIMATE <span>PLAYBET</span></div>
-    </div>
+  <div class="balance">
+    <small>DEMO BALANCE</small>
+    <strong id="balance">$800.00</strong>
+  </div>
+</header>
 
-    <div class="balance-top">
-      <div class="balance-label">Play Balance</div>
-      <div class="balance-value" id="topBalance">$0.00</div>
-    </div>
-  </header>
+<div class="notice">
+  <strong>NO CASH VALUE</strong>
+  • NO DEPOSITS • NO WITHDRAWALS
+</div>
 
+<div class="main-layout">
 
-  <!-- HOME -->
-  <main id="page-home" class="page active">
+<aside class="sidebar">
 
-    <div class="notice">
-      <strong>SIMULATION ONLY</strong>
-      <span>• No deposits • No withdrawals • No cash value</span>
-    </div>
+<h4>SPORTS</h4>
 
-    <section class="hero">
-      <div class="eyebrow">Ultimate Sports & Casino</div>
+<button class="sport-button active" data-sport="nba">
+🏀 NBA
+</button>
 
-      <h1>Your premium simulated gaming hub.</h1>
+<button class="sport-button" data-sport="mlb">
+⚾ MLB
+</button>
 
-      <p>
-        Create simulated sportsbook picks, play demo casino games,
-        track your play balance and manage your personal activity.
-      </p>
+<button class="sport-button" data-sport="nfl">
+🏈 NFL
+</button>
 
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-label">Balance</div>
-          <div class="stat-value" id="heroBalance">$0.00</div>
-        </div>
+<button class="sport-button" data-sport="nhl">
+🏒 NHL
+</button>
 
-        <div class="stat">
-          <div class="stat-label">Open Bets</div>
-          <div class="stat-value" id="openBetCount">0</div>
-        </div>
+<button class="sport-button" data-sport="ncaaf">
+🏈 College Football
+</button>
 
-        <div class="stat">
-          <div class="stat-label">Account</div>
-          <div class="stat-value" id="homeAccountStatus">Guest</div>
-        </div>
-      </div>
-    </section>
+<button class="sport-button" data-sport="ncaab">
+🏀 College Basketball
+</button>
 
+</aside>
 
-    <div class="section-head">
-      <h2>Quick Actions</h2>
-    </div>
+<main class="content">
 
-    <div class="quick-grid">
+<section class="hero">
+<h1>Sportsbook</h1>
+<p>
+Live and upcoming games with current odds and start times.
+</p>
+</section>
 
-      <button class="quick" onclick="goPage('sports')">
-        <span class="quick-icon">🏆</span>
-        Sportsbook
-        <small>Make picks</small>
-      </button>
+<div class="tabs">
 
-      <button class="quick" onclick="goPage('casino')">
-        <span class="quick-icon">♠️</span>
-        Casino
-        <small>Demo games</small>
-      </button>
+<button class="tab active" data-sport="nba">
+NBA
+</button>
 
-      <button class="quick" onclick="goPage('bets')">
-        <span class="quick-icon">🧾</span>
-        My Bets
-        <small>Private history</small>
-      </button>
+<button class="tab" data-sport="mlb">
+MLB
+</button>
 
-      <button class="quick" onclick="goPage('account')">
-        <span class="quick-icon">👤</span>
-        Account
-        <small>Profile</small>
-      </button>
+<button class="tab" data-sport="nfl">
+NFL
+</button>
 
-    </div>
+<button class="tab" data-sport="nhl">
+NHL
+</button>
 
+<button class="tab" data-sport="ncaaf">
+NCAAF
+</button>
 
-    <div class="section-head">
-      <h2>Featured Match</h2>
-      <span>Simulated market</span>
-    </div>
-
-    <div class="market">
-      <div class="market-head">
-        <div>
-          <div class="market-league">Pro Football</div>
-          <div class="market-title">Carolina vs Atlanta</div>
-        </div>
-        <div class="live">Featured</div>
-      </div>
-
-      <div class="teams">
-
-        <div class="team-row">
-          <div class="team-badge">CAR</div>
-          <div class="team-name">Carolina</div>
-          <div class="team-line">-2.5</div>
-        </div>
-
-        <div class="team-row">
-          <div class="team-badge">ATL</div>
-          <div class="team-name">Atlanta</div>
-          <div class="team-line">+2.5</div>
-        </div>
-
-      </div>
-    </div>
-
-  </main>
-
-
-  <!-- SPORTS -->
-  <main id="page-sports" class="page">
-
-    <div class="section-head" style="margin-top:0">
-      <h2>Sportsbook</h2>
-      <span>Simulated markets</span>
-    </div>
-
-    <div class="sport-tabs">
-      <button class="pill active">Featured</button>
-      <button class="pill">Football</button>
-      <button class="pill">Basketball</button>
-      <button class="pill">Baseball</button>
-      <button class="pill">Hockey</button>
-    </div>
-
-    <div class="markets">
-
-      <div class="market">
-
-        <div class="market-head">
-          <div>
-            <div class="market-league">Pro Football</div>
-            <div class="market-title">Carolina vs Atlanta</div>
-          </div>
-          <div class="live">Today</div>
-        </div>
-
-        <div class="teams">
-
-          <div class="team-row">
-            <div class="team-badge">CAR</div>
-            <div class="team-name">Carolina</div>
-            <div class="team-line">-2.5</div>
-          </div>
-
-          <div class="team-row">
-            <div class="team-badge">ATL</div>
-            <div class="team-name">Atlanta</div>
-            <div class="team-line">+2.5</div>
-          </div>
-
-        </div>
-
-        <div class="odds-grid">
-
-          <button class="odd"
-            onclick="selectBet(this,'Football','Carolina -2.5','-110')">
-            <small>Spread</small>
-            -2.5 (-110)
-          </button>
-
-          <button class="odd"
-            onclick="selectBet(this,'Football','Over 44.5','-110')">
-            <small>Total</small>
-            O 44.5
-          </button>
-
-          <button class="odd"
-            onclick="selectBet(this,'Football','Carolina Moneyline','-135')">
-            <small>Moneyline</small>
-            CAR -135
-          </button>
-
-        </div>
-      </div>
-
-
-      <div class="market">
-
-        <div class="market-head">
-          <div>
-            <div class="market-league">Pro Basketball</div>
-            <div class="market-title">Charlotte vs Miami</div>
-          </div>
-          <div class="live">Tonight</div>
-        </div>
-
-        <div class="teams">
-
-          <div class="team-row">
-            <div class="team-badge">CHA</div>
-            <div class="team-name">Charlotte</div>
-            <div class="team-line">+4.5</div>
-          </div>
-
-          <div class="team-row">
-            <div class="team-badge">MIA</div>
-            <div class="team-name">Miami</div>
-            <div class="team-line">-4.5</div>
-          </div>
-
-        </div>
-
-        <div class="odds-grid">
-
-          <button class="odd"
-            onclick="selectBet(this,'Basketball','Charlotte +4.5','-110')">
-            <small>Spread</small>
-            +4.5 (-110)
-          </button>
-
-          <button class="odd"
-            onclick="selectBet(this,'Basketball','Under 218.5','-110')">
-            <small>Total</small>
-            U 218.5
-          </button>
-
-          <button class="odd"
-            onclick="selectBet(this,'Basketball','Miami Moneyline','-180')">
-            <small>Moneyline</small>
-            MIA -180
-          </button>
-
-        </div>
-      </div>
-
-
-      <div class="market">
-
-        <div class="market-head">
-          <div>
-            <div class="market-league">Major League Baseball</div>
-            <div class="market-title">New York vs Boston</div>
-          </div>
-          <div class="live">Today</div>
-        </div>
-
-        <div class="odds-grid">
-
-          <button class="odd"
-            onclick="selectBet(this,'Baseball','New York -1.5','+120')">
-            <small>Run Line</small>
-            NY -1.5
-          </button>
-
-          <button class="odd"
-            onclick="selectBet(this,'Baseball','Over 8.5','-105')">
-            <small>Total</small>
-            O 8.5
-          </button>
-
-          <button class="odd"
-            onclick="selectBet(this,'Baseball','Boston Moneyline','-150')">
-            <small>Moneyline</small>
-            BOS -150
-          </button>
-
-        </div>
-      </div>
-
-    </div>
-
-  </main>
-
-
-  <!-- CASINO -->
-  <main id="page-casino" class="page">
-
-    <div class="section-head" style="margin-top:0">
-      <h2>Casino</h2>
-      <span>Demo games</span>
-    </div>
-
-    <div class="notice">
-      Casino games are entertainment demos only and do not create real-money winnings or losses.
-    </div>
-
-    <div class="game-grid">
-
-      <div class="game-card">
-        <div class="game-icon">♠️</div>
-        <h3>Blackjack</h3>
-        <p>Quick demo</p>
-        <button class="play-btn" onclick="playDemo('Blackjack')">▶</button>
-      </div>
-
-      <div class="game-card">
-        <div class="game-icon">🎯</div>
-        <h3>Roulette</h3>
-        <p>Red / black demo</p>
-        <button class="play-btn" onclick="playDemo('Roulette')">▶</button>
-      </div>
-
-      <div class="game-card">
-        <div class="game-icon">🎰</div>
-        <h3>Slots</h3>
-        <p>Three-reel demo</p>
-        <button class="play-btn" onclick="playDemo('Slots')">▶</button>
-      </div>
-
-      <div class="game-card">
-        <div class="game-icon">🃏</div>
-        <h3>Poker</h3>
-        <p>Quick-hand demo</p>
-        <button class="play-btn" onclick="playDemo('Poker')">▶</button>
-      </div>
-
-    </div>
-
-  </main>
-
-
-  <!-- MY BETS -->
-  <main id="page-bets" class="page">
-
-    <div class="section-head" style="margin-top:0">
-      <h2>My Bets</h2>
-      <span>Only you can see these</span>
-    </div>
-
-    <div class="filter-tabs" style="margin-bottom:18px">
-      <button class="pill active" onclick="renderBets('all',this)">All</button>
-      <button class="pill" onclick="renderBets('pending',this)">Open</button>
-      <button class="pill" onclick="renderBets('settled',this)">Settled</button>
-    </div>
-
-    <div id="betsList"></div>
-
-  </main>
-
-
-  <!-- ACCOUNT -->
-  <main id="page-account" class="page">
-
-    <div id="guestAccount">
-
-      <div class="card" style="text-align:center;padding:35px 24px">
-        <div class="logo" style="margin:0 auto 18px">UPB</div>
-
-        <h2 style="font-size:30px">Ultimate PlayBet</h2>
-
-        <p style="color:var(--muted);margin:12px 0 25px;line-height:1.6">
-          Sign in to view your private simulated balance, picks and activity.
-        </p>
-
-        <button class="btn" onclick="openLogin()">Log In</button>
-
-        <button
-          class="btn secondary"
-          style="margin-top:10px"
-          onclick="openSignup()">
-          Create Account
-        </button>
-      </div>
-
-    </div>
-
-
-    <div id="loggedAccount" class="hidden">
-
-      <div class="account-head">
-
-        <div class="profile-line">
-          <div class="avatar" id="avatarLetters">UP</div>
-
-          <div>
-            <h2 id="accountUsername">Player</h2>
-            <p id="accountRole">Player account</p>
-          </div>
-        </div>
-
-      </div>
-
-
-      <div class="section-head">
-        <h2>Account Overview</h2>
-      </div>
-
-      <div class="account-list">
-
-        <div class="account-item">
-          <span>💰 Play Balance</span>
-          <strong id="accountBalance">$0.00</strong>
-        </div>
-
-        <div class="account-item">
-          <span>🏁 Starting Balance</span>
-          <strong id="startingBalance">$0.00</strong>
-        </div>
-
-        <div class="account-item">
-          <span>🛡 Wager Limit</span>
-          <strong id="wagerLimit">$0.00</strong>
-        </div>
-
-        <div class="account-item">
-          <span>● Account Status</span>
-          <strong id="activeStatus" class="positive">Active</strong>
-        </div>
-
-      </div>
-
-
-      <div style="margin-top:18px">
-
-        <button
-          class="btn secondary"
-          onclick="goPage('bets')">
-          My Bets
-        </button>
-
-        <button
-          id="adminDashboardBtn"
-          class="btn green hidden"
-          style="margin-top:10px"
-          onclick="goPage('admin')">
-          Open Admin Dashboard
-        </button>
-
-        <button
-          class="btn danger"
-          style="margin-top:10px"
-          onclick="logout()">
-          Log Out
-        </button>
-
-      </div>
-
-    </div>
-
-  </main>
-
-
-  <!-- ADMIN -->
-  <main id="page-admin" class="page">
-
-    <div class="admin-shell">
-
-      <aside class="admin-sidebar">
-
-        <div class="admin-title">
-          ADMIN ONLY
-        </div>
-
-        <button
-          class="admin-nav-btn active"
-          onclick="showAdminSection('dashboard',this)">
-          Dashboard
-        </button>
-
-        <button
-          class="admin-nav-btn"
-          onclick="showAdminSection('users',this)">
-          Users
-        </button>
-
-        <button
-          class="admin-nav-btn"
-          onclick="showAdminSection('activity',this)">
-          Activity Logs
-        </button>
-
-        <button
-          class="admin-nav-btn"
-          onclick="openCreatePlayer()">
-          + Create Player
-        </button>
-
-        <button
-          class="admin-nav-btn"
-          onclick="goPage('account')">
-          Back to Account
-        </button>
-
-      </aside>
-
-
-      <section class="admin-main">
-
-        <div id="admin-dashboard">
-
-          <div class="section-head" style="margin-top:0">
-            <h2>Admin Dashboard</h2>
-            <span>Private</span>
-          </div>
-
-          <div class="admin-stats">
-
-            <div class="card">
-              <div class="stat-label">Total Users</div>
-              <div class="stat-value" id="adminTotalUsers">0</div>
-            </div>
-
-            <div class="card">
-              <div class="stat-label">Combined Simulated Balance</div>
-              <div class="stat-value" id="adminTotalBalance">$0.00</div>
-            </div>
-
-            <div class="card">
-              <div class="stat-label">Pending Approval</div>
-              <div class="stat-value" id="adminPending">0</div>
-            </div>
-
-          </div>
-
-          <div class="card">
-            <h3 style="margin-bottom:15px">Privacy</h3>
-            <p style="color:var(--muted);line-height:1.6">
-              Player accounts only receive their own account and wager data.
-              The complete user list and activity area are restricted to administrators.
-            </p>
-          </div>
-
-        </div>
-
-
-        <div id="admin-users" class="hidden">
-
-          <div class="section-head" style="margin-top:0">
-            <h2>User Management</h2>
-
-            <button
-              class="btn small"
-              onclick="openCreatePlayer()">
-              + Create Player
-            </button>
-          </div>
-
-          <div class="admin-table-wrap">
-
-            <table>
-
-              <thead>
-              <tr>
-                <th>User</th>
-                <th>Status</th>
-                <th>Balance</th>
-                <th>Simulated Deficit</th>
-                <th>Wager Limit</th>
-                <th>Actions</th>
-              </tr>
-              </thead>
-
-              <tbody id="adminUsersBody"></tbody>
-
-            </table>
-
-          </div>
-
-        </div>
-
-
-        <div id="admin-activity" class="hidden">
-
-          <div class="section-head" style="margin-top:0">
-            <h2>Activity Logs</h2>
-            <span>Admin only</span>
-          </div>
-
-          <div class="card" id="adminActivityList"></div>
-
-        </div>
-
-      </section>
-    </div>
-
-  </main>
+<button class="tab" data-sport="ncaab">
+NCAAB
+</button>
 
 </div>
 
+<div class="section-header">
 
-<!-- BET SLIP -->
-<div id="betSlip" class="betslip hidden">
+<h2 id="leagueTitle">
+NBA
+</h2>
 
-  <div class="betslip-title">
-    <strong>Bet Slip</strong>
-    <button class="link-btn" onclick="clearBet()">Clear</button>
-  </div>
-
-  <div class="betslip-selection" id="betSelection"></div>
-
-  <div class="bet-entry">
-    <input
-      id="betAmount"
-      type="number"
-      min="1"
-      step="1"
-      placeholder="Simulated wager" />
-
-    <button onclick="placeBet()">Place</button>
-  </div>
+<button class="refresh" onclick="loadEverything()">
+↻ Refresh
+</button>
 
 </div>
 
+<div id="games">
+<div class="loading">
+Loading current games and odds...
+</div>
+</div>
 
-<!-- LOGIN -->
-<div id="loginModal" class="modal hidden">
+</main>
 
-  <div class="modal-box">
+<aside class="betslip">
 
-    <div class="modal-head">
-      <h2>Log In</h2>
-      <button class="close" onclick="closeModal('loginModal')">×</button>
-    </div>
+<h2>BET SLIP</h2>
 
-    <div class="field">
-      <label>Username</label>
-      <input id="loginUsername" autocomplete="username" />
-    </div>
+<div id="picks">
+<div class="empty">
+Tap an odd to add a selection.
+</div>
+</div>
 
-    <div class="field">
-      <label>Password</label>
-      <input id="loginPassword" type="password" autocomplete="current-password" />
-    </div>
+<input
+id="wager"
+class="wager"
+type="number"
+min="1"
+placeholder="Wager amount"
+oninput="updateSlip()"
+>
 
-    <button class="btn" onclick="login()">Log In</button>
+<div class="summary">
+<span>Potential Win</span>
+<strong id="potentialWin">$0.00</strong>
+</div>
 
-    <div class="auth-switch">
-      Don't have an account?
-      <button class="link-btn" onclick="switchToSignup()">Sign Up</button>
-    </div>
+<div class="summary">
+<span>Total Return</span>
+<strong id="totalReturn">$0.00</strong>
+</div>
 
-  </div>
+<button
+id="placeButton"
+class="place"
+onclick="placeBet()"
+disabled
+>
+PLACE BET
+</button>
+
+<div class="history">
+
+<h3>MY BETS</h3>
+
+<div id="history"></div>
 
 </div>
 
-
-<!-- SIGNUP -->
-<div id="signupModal" class="modal hidden">
-
-  <div class="modal-box">
-
-    <div class="modal-head">
-      <h2>Create Account</h2>
-      <button class="close" onclick="closeModal('signupModal')">×</button>
-    </div>
-
-    <div class="field">
-      <label>Username</label>
-      <input id="signupUsername" autocomplete="username" />
-    </div>
-
-    <div class="field">
-      <label>Password</label>
-      <input id="signupPassword" type="password" autocomplete="new-password" />
-    </div>
-
-    <div class="field">
-      <label>Confirm Password</label>
-      <input id="signupConfirm" type="password" autocomplete="new-password" />
-    </div>
-
-    <button class="btn" onclick="signup()">Create Account</button>
-
-    <div class="auth-switch">
-      Already have an account?
-      <button class="link-btn" onclick="switchToLogin()">Log In</button>
-    </div>
-
-  </div>
+</aside>
 
 </div>
-
-
-<!-- CREATE PLAYER -->
-<div id="createPlayerModal" class="modal hidden">
-
-  <div class="modal-box">
-
-    <div class="modal-head">
-      <h2>Create Player</h2>
-      <button class="close" onclick="closeModal('createPlayerModal')">×</button>
-    </div>
-
-    <div class="field">
-      <label>Username</label>
-      <input id="newPlayerUsername" />
-    </div>
-
-    <div class="field">
-      <label>Password</label>
-      <input id="newPlayerPassword" type="password" />
-    </div>
-
-    <p style="color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:15px">
-      This creates a simulation-only player account. After creation,
-      you can approve the user and set their simulated balance and wager limit.
-    </p>
-
-    <button class="btn" onclick="adminCreatePlayer()">Create Player</button>
-
-  </div>
-
-</div>
-
-
-<!-- EDIT USER -->
-<div id="editUserModal" class="modal hidden">
-
-  <div class="modal-box">
-
-    <div class="modal-head">
-      <h2>Edit Player</h2>
-      <button class="close" onclick="closeModal('editUserModal')">×</button>
-    </div>
-
-    <input id="editUserId" type="hidden" />
-
-    <div class="field">
-      <label>Simulated Balance</label>
-      <input id="editBalance" type="number" step=".01" />
-    </div>
-
-    <div class="field">
-      <label>Wager Limit</label>
-      <input id="editWagerLimit" type="number" min="0" step=".01" />
-    </div>
-
-    <button class="btn" onclick="saveUserMoneySettings()">Save Changes</button>
-
-  </div>
-
-</div>
-
-
-<!-- NAVIGATION -->
-<nav class="bottom-nav">
-
-  <button
-    class="nav-btn active"
-    data-page="home"
-    onclick="goPage('home')">
-    <span class="nav-icon">⌂</span>
-    <span>Home</span>
-  </button>
-
-  <button
-    class="nav-btn"
-    data-page="sports"
-    onclick="goPage('sports')">
-    <span class="nav-icon">◉</span>
-    <span>Sports</span>
-  </button>
-
-  <button
-    class="nav-btn"
-    data-page="casino"
-    onclick="goPage('casino')">
-    <span class="nav-icon">♣</span>
-    <span>Casino</span>
-  </button>
-
-  <button
-    class="nav-btn"
-    data-page="account"
-    onclick="goPage('account')">
-    <span class="nav-icon">☰</span>
-    <span>Account</span>
-  </button>
-
-</nav>
-
-
-<div id="toast" class="toast hidden"></div>
-
 
 <script>
 
-let currentUser = null;
-let bets = [];
-let adminUsers = [];
-let selectedBet = null;
+let currentSport = "nba";
 
+let selections = [];
 
-/* -------------------------
-   HELPERS
--------------------------- */
+let scores = {};
 
-function money(value){
-  const n = Number(value || 0);
+let balance =
+Number(localStorage.getItem("upb_balance"));
 
-  const formatted = Math.abs(n).toLocaleString("en-US",{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  });
-
-  return n < 0
-    ? "-$" + formatted
-    : "$" + formatted;
+if (Number.isNaN(balance)) {
+balance = 800;
 }
 
+let bets =
+JSON.parse(localStorage.getItem("upb_bets") || "[]");
 
-function toast(message){
-  const el = document.getElementById("toast");
+const sportNames = {
+nba: "NBA",
+mlb: "MLB",
+nfl: "NFL",
+nhl: "NHL",
+ncaaf: "COLLEGE FOOTBALL",
+ncaab: "COLLEGE BASKETBALL"
+};
 
-  el.textContent = message;
-  el.classList.remove("hidden");
+document.querySelectorAll("[data-sport]").forEach(button => {
 
-  clearTimeout(window.toastTimer);
+button.addEventListener("click", () => {
 
-  window.toastTimer = setTimeout(()=>{
-    el.classList.add("hidden");
-  },3000);
+currentSport = button.dataset.sport;
+
+document
+.querySelectorAll("[data-sport]")
+.forEach(item =>
+item.classList.remove("active")
+);
+
+document
+.querySelectorAll(
+`[data-sport="${currentSport}"]`
+)
+.forEach(item =>
+item.classList.add("active")
+);
+
+document.getElementById(
+"leagueTitle"
+).textContent =
+sportNames[currentSport];
+
+loadEverything();
+
+});
+
+});
+
+function formatOdds(number) {
+
+if (
+number === undefined ||
+number === null
+) return "—";
+
+number = Number(number);
+
+return number > 0
+? `+${number}`
+: `${number}`;
+
 }
 
+function formatTime(date) {
 
-async function api(url,options={}){
-  const response = await fetch(url,{
-    credentials:"include",
-    headers:{
-      "Content-Type":"application/json",
-      ...(options.headers || {})
-    },
-    ...options
-  });
+return new Intl.DateTimeFormat(
+"en-US",
+{
+timeZone:
+"America/New_York",
+weekday: "short",
+month: "short",
+day: "numeric",
+hour: "numeric",
+minute: "2-digit",
+timeZoneName: "short"
+}
+).format(
+new Date(date)
+);
 
-  let data = {};
-
-  try{
-    data = await response.json();
-  }catch{}
-
-  if(!response.ok){
-    throw new Error(data.error || "Request failed");
-  }
-
-  return data;
 }
 
+function americanToDecimal(odd) {
 
-/* -------------------------
-   NAVIGATION
--------------------------- */
+odd = Number(odd);
 
-function goPage(page){
-
-  if(page === "admin" && (!currentUser || currentUser.role !== "admin")){
-    toast("Admin access required.");
-    return;
-  }
-
-  document.querySelectorAll(".page").forEach(el=>{
-    el.classList.remove("active");
-  });
-
-  const target = document.getElementById("page-" + page);
-
-  if(target){
-    target.classList.add("active");
-  }
-
-  document.querySelectorAll(".nav-btn").forEach(btn=>{
-    btn.classList.toggle(
-      "active",
-      btn.dataset.page === page
-    );
-  });
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
-  if(page === "bets"){
-    loadBets();
-  }
-
-  if(page === "account"){
-    refreshMe();
-  }
-
-  if(page === "admin"){
-    loadAdmin();
-  }
+if (odd > 0) {
+return odd / 100 + 1;
 }
 
+return 100 / Math.abs(odd) + 1;
 
-/* -------------------------
-   AUTH MODALS
--------------------------- */
-
-function openLogin(){
-  document.getElementById("loginModal").classList.remove("hidden");
 }
 
+function findMarket(bookmaker, key) {
 
-function openSignup(){
-  document.getElementById("signupModal").classList.remove("hidden");
+return bookmaker?.markets?.find(
+market => market.key === key
+);
+
 }
 
+function findOutcome(market, name) {
 
-function closeModal(id){
-  document.getElementById(id).classList.add("hidden");
+return market?.outcomes?.find(
+outcome => outcome.name === name
+);
+
 }
 
+async function loadEverything() {
 
-function switchToSignup(){
-  closeModal("loginModal");
-  openSignup();
+const gamesContainer =
+document.getElementById("games");
+
+gamesContainer.innerHTML =
+`<div class="loading">
+Loading current games and odds...
+</div>`;
+
+try {
+
+const [
+oddsResponse,
+scoresResponse
+] =
+await Promise.all([
+fetch(`/api/odds/${currentSport}`),
+fetch(`/api/scores/${currentSport}`)
+]);
+
+const oddsData =
+await oddsResponse.json();
+
+const scoresData =
+await scoresResponse.json();
+
+if (!oddsResponse.ok) {
+throw new Error(
+oddsData.error ||
+"Could not load games."
+);
 }
 
+scores = {};
 
-function switchToLogin(){
-  closeModal("signupModal");
-  openLogin();
+if (scoresResponse.ok) {
+
+(scoresData.scores || [])
+.forEach(game => {
+
+scores[game.id] = game;
+
+});
+
 }
 
+renderGames(
+oddsData.games || []
+);
 
-/* -------------------------
-   SIGN UP
--------------------------- */
+} catch (error) {
 
-async function signup(){
+gamesContainer.innerHTML =
+`<div class="error">
+${error.message}
+</div>`;
 
-  const username =
-    document.getElementById("signupUsername").value.trim();
-
-  const password =
-    document.getElementById("signupPassword").value;
-
-  const confirm =
-    document.getElementById("signupConfirm").value;
-
-  if(password !== confirm){
-    toast("Passwords do not match.");
-    return;
-  }
-
-  try{
-
-    const result = await api("/api/signup",{
-      method:"POST",
-      body:JSON.stringify({
-        username,
-        password
-      })
-    });
-
-    closeModal("signupModal");
-
-    if(result.firstAdmin){
-      toast("Administrator account created. You can now log in.");
-    }else{
-      toast("Account created. Approval may be required before login.");
-    }
-
-    document.getElementById("loginUsername").value = username;
-
-    openLogin();
-
-  }catch(error){
-    toast(error.message);
-  }
 }
 
-
-/* -------------------------
-   LOGIN
--------------------------- */
-
-async function login(){
-
-  const username =
-    document.getElementById("loginUsername").value.trim();
-
-  const password =
-    document.getElementById("loginPassword").value;
-
-  try{
-
-    const result = await api("/api/login",{
-      method:"POST",
-      body:JSON.stringify({
-        username,
-        password
-      })
-    });
-
-    currentUser = result.user;
-
-    closeModal("loginModal");
-
-    applyUser();
-
-    toast("Welcome back, " + currentUser.username);
-
-    goPage("home");
-
-  }catch(error){
-    toast(error.message);
-  }
 }
 
+function renderGames(games) {
 
-/* -------------------------
-   LOGOUT
--------------------------- */
+const container =
+document.getElementById("games");
 
-async function logout(){
+if (!games.length) {
 
-  try{
-    await api("/api/logout",{
-      method:"POST"
-    });
-  }catch{}
+container.innerHTML =
+`<div class="empty">
+No games are currently available.
+</div>`;
 
-  currentUser = null;
-  bets = [];
+return;
 
-  applyUser();
-
-  toast("Logged out.");
-
-  goPage("home");
 }
 
+container.innerHTML = "";
 
-/* -------------------------
-   CURRENT USER
--------------------------- */
+games.forEach(game => {
 
-async function refreshMe(){
+const bookmaker =
+game.bookmakers?.[0];
 
-  try{
+const h2h =
+findMarket(
+bookmaker,
+"h2h"
+);
 
-    currentUser = await api("/api/me");
+const spreads =
+findMarket(
+bookmaker,
+"spreads"
+);
 
-  }catch{
-    currentUser = null;
-  }
+const totals =
+findMarket(
+bookmaker,
+"totals"
+);
 
-  applyUser();
+const awayMoneyline =
+findOutcome(
+h2h,
+game.away_team
+);
+
+const homeMoneyline =
+findOutcome(
+h2h,
+game.home_team
+);
+
+const awaySpread =
+findOutcome(
+spreads,
+game.away_team
+);
+
+const homeSpread =
+findOutcome(
+spreads,
+game.home_team
+);
+
+const over =
+findOutcome(
+totals,
+"Over"
+);
+
+const under =
+findOutcome(
+totals,
+"Under"
+);
+
+const scoreData =
+scores[game.id];
+
+let awayScore = "";
+let homeScore = "";
+let statusText =
+formatTime(
+game.commence_time
+);
+
+if (scoreData) {
+
+if (
+scoreData.scores &&
+scoreData.scores.length
+) {
+
+const awayScoreData =
+scoreData.scores.find(
+x =>
+x.name ===
+game.away_team
+);
+
+const homeScoreData =
+scoreData.scores.find(
+x =>
+x.name ===
+game.home_team
+);
+
+awayScore =
+awayScoreData?.score || "";
+
+homeScore =
+homeScoreData?.score || "";
+
 }
 
+if (
+scoreData.completed
+) {
 
-function applyUser(){
+statusText =
+"FINAL";
 
-  const balance =
-    currentUser
-      ? Number(currentUser.balance || 0)
-      : 0;
+} else if (
+new Date(
+game.commence_time
+) <= new Date()
+) {
 
-  document.getElementById("topBalance").textContent =
-    money(balance);
+statusText =
+"LIVE";
 
-  document.getElementById("heroBalance").textContent =
-    money(balance);
-
-
-  const guest =
-    document.getElementById("guestAccount");
-
-  const logged =
-    document.getElementById("loggedAccount");
-
-
-  if(!currentUser){
-
-    guest.classList.remove("hidden");
-    logged.classList.add("hidden");
-
-    document.getElementById("homeAccountStatus").textContent =
-      "Guest";
-
-    document.getElementById("adminDashboardBtn")
-      .classList.add("hidden");
-
-    return;
-  }
-
-
-  guest.classList.add("hidden");
-  logged.classList.remove("hidden");
-
-  document.getElementById("homeAccountStatus").textContent =
-    "Active";
-
-  document.getElementById("accountUsername").textContent =
-    currentUser.username;
-
-  document.getElementById("accountRole").textContent =
-    currentUser.role === "admin"
-      ? "Administrator"
-      : "Player account";
-
-  document.getElementById("avatarLetters").textContent =
-    currentUser.username
-      .slice(0,2)
-      .toUpperCase();
-
-  const accountBalance =
-    document.getElementById("accountBalance");
-
-  accountBalance.textContent =
-    money(currentUser.balance);
-
-  accountBalance.classList.toggle(
-    "negative",
-    Number(currentUser.balance) < 0
-  );
-
-  accountBalance.classList.toggle(
-    "positive",
-    Number(currentUser.balance) >= 0
-  );
-
-
-  document.getElementById("startingBalance").textContent =
-    money(currentUser.starting_balance);
-
-  document.getElementById("wagerLimit").textContent =
-    money(currentUser.wager_limit);
-
-  document.getElementById("activeStatus").textContent =
-    currentUser.active === false
-      ? "Suspended"
-      : "Active";
-
-
-  if(currentUser.role === "admin"){
-
-    document.getElementById("adminDashboardBtn")
-      .classList.remove("hidden");
-
-  }else{
-
-    document.getElementById("adminDashboardBtn")
-      .classList.add("hidden");
-
-  }
 }
 
-
-/* -------------------------
-   SPORTSBOOK
--------------------------- */
-
-function selectBet(button,sport,selection,odds){
-
-  if(!currentUser){
-    toast("Log in before making a simulated wager.");
-    openLogin();
-    return;
-  }
-
-  document.querySelectorAll(".odd").forEach(el=>{
-    el.classList.remove("selected");
-  });
-
-  button.classList.add("selected");
-
-  selectedBet = {
-    sport,
-    selection,
-    odds
-  };
-
-  document.getElementById("betSelection").textContent =
-    selection + " • " + odds;
-
-  document.getElementById("betSlip")
-    .classList.remove("hidden");
 }
 
+const gameElement =
+document.createElement("div");
 
-function clearBet(){
+gameElement.className =
+"game";
 
-  selectedBet = null;
+gameElement.innerHTML = `
 
-  document.querySelectorAll(".odd").forEach(el=>{
-    el.classList.remove("selected");
-  });
+<div class="game-header">
 
-  document.getElementById("betSlip")
-    .classList.add("hidden");
+<span>
+${game.sport_title}
+</span>
+
+<span class="${
+statusText === "LIVE"
+? "live"
+: ""
+}">
+${statusText}
+</span>
+
+</div>
+
+<div class="teams">
+
+<div class="team">
+
+<span>
+${game.away_team}
+</span>
+
+<span class="score">
+${awayScore}
+</span>
+
+</div>
+
+<div class="team">
+
+<span>
+${game.home_team}
+</span>
+
+<span class="score">
+${homeScore}
+</span>
+
+</div>
+
+</div>
+
+<div class="market-labels">
+
+<span>SPREAD</span>
+
+<span>MONEYLINE</span>
+
+<span>TOTAL</span>
+
+</div>
+
+<div class="market-row">
+
+${createOddButton(
+game,
+awaySpread,
+game.away_team,
+"Spread",
+awaySpread
+? `${
+awaySpread.point > 0
+? "+"
+: ""
+}${awaySpread.point}`
+: "—"
+)}
+
+${createOddButton(
+game,
+awayMoneyline,
+game.away_team,
+"Moneyline",
+"ML"
+)}
+
+${createOddButton(
+game,
+over,
+"Over",
+"Total",
+over
+? `O ${over.point}`
+: "—"
+)}
+
+</div>
+
+<div class="market-row">
+
+${createOddButton(
+game,
+homeSpread,
+game.home_team,
+"Spread",
+homeSpread
+? `${
+homeSpread.point > 0
+? "+"
+: ""
+}${homeSpread.point}`
+: "—"
+)}
+
+${createOddButton(
+game,
+homeMoneyline,
+game.home_team,
+"Moneyline",
+"ML"
+)}
+
+${createOddButton(
+game,
+under,
+"Under",
+"Total",
+under
+? `U ${under.point}`
+: "—"
+)}
+
+</div>
+
+`;
+
+container.appendChild(
+gameElement
+);
+
+});
+
 }
 
+function createOddButton(
+game,
+outcome,
+selectionName,
+market,
+lineLabel
+) {
 
-function calculatePayout(amount,odds){
+if (!outcome) {
 
-  const wager = Number(amount);
-  const american = Number(odds);
+return `
+<button class="odd" disabled>
+—
+</button>
+`;
 
-  if(!Number.isFinite(wager) || wager <= 0){
-    return 0;
-  }
-
-  if(american > 0){
-    return wager + wager * american / 100;
-  }
-
-  return wager + wager * 100 / Math.abs(american);
 }
 
+const pick = {
 
-async function placeBet(){
+id:
+game.id +
+"-" +
+market +
+"-" +
+selectionName,
 
-  if(!selectedBet){
-    return;
-  }
+eventId:
+game.id,
 
-  if(!currentUser){
-    openLogin();
-    return;
-  }
+sport:
+game.sport_title,
 
-  const amount =
-    Number(document.getElementById("betAmount").value);
+away:
+game.away_team,
 
-  if(!Number.isFinite(amount) || amount <= 0){
-    toast("Enter a valid simulated wager.");
-    return;
-  }
+home:
+game.home_team,
 
-  const potentialPayout =
-    calculatePayout(
-      amount,
-      selectedBet.odds
-    );
+selection:
+selectionName,
 
-  try{
+market,
 
-    await api("/api/bets",{
-      method:"POST",
-      body:JSON.stringify({
-        sport:selectedBet.sport,
-        selection:selectedBet.selection,
-        odds:selectedBet.odds,
-        amount,
-        potentialPayout
-      })
-    });
+line:
+outcome.point ?? null,
 
-    toast("Simulated wager placed.");
+odds:
+outcome.price,
 
-    clearBet();
+start:
+game.commence_time
 
-    document.getElementById("betAmount").value = "";
+};
 
-    await refreshMe();
-    await loadBets();
+const encoded =
+encodeURIComponent(
+JSON.stringify(pick)
+);
 
-    goPage("bets");
+return `
 
-  }catch(error){
-    toast(error.message);
-  }
+<button
+class="odd"
+onclick="addPick('${encoded}')"
+>
+
+${lineLabel}
+
+<br>
+
+<strong>
+${formatOdds(
+outcome.price
+)}
+</strong>
+
+</button>
+
+`;
+
 }
 
+function addPick(encoded) {
 
-/* -------------------------
-   PLAYER BET HISTORY
--------------------------- */
+const pick =
+JSON.parse(
+decodeURIComponent(encoded)
+);
 
-async function loadBets(){
+selections =
+selections.filter(
+selection =>
+!(
+selection.eventId ===
+pick.eventId &&
+selection.market ===
+pick.market
+)
+);
 
-  if(!currentUser){
+selections.push(
+pick
+);
 
-    bets = [];
+renderSlip();
 
-    renderBets("all");
-
-    return;
-  }
-
-  try{
-
-    bets = await api("/api/bets");
-
-  }catch(error){
-
-    bets = [];
-
-    toast(error.message);
-  }
-
-  renderBets("all");
-
-  const openCount =
-    bets.filter(b=>{
-      return String(b.status).toLowerCase() === "pending";
-    }).length;
-
-  document.getElementById("openBetCount").textContent =
-    openCount;
 }
 
+function removePick(id) {
 
-function renderBets(filter="all",button=null){
+selections =
+selections.filter(
+pick =>
+pick.id !== id
+);
 
-  if(button){
+renderSlip();
 
-    document.querySelectorAll("#page-bets .pill")
-      .forEach(el=>el.classList.remove("active"));
-
-    button.classList.add("active");
-  }
-
-  const holder =
-    document.getElementById("betsList");
-
-  if(!currentUser){
-
-    holder.innerHTML =
-      `<div class="empty">
-        Log in to view your private simulated wager history.
-      </div>`;
-
-    return;
-  }
-
-  let shown = [...bets];
-
-  if(filter === "pending"){
-
-    shown = shown.filter(b=>
-      String(b.status).toLowerCase() === "pending"
-    );
-
-  }
-
-  if(filter === "settled"){
-
-    shown = shown.filter(b=>
-      String(b.status).toLowerCase() !== "pending"
-    );
-
-  }
-
-
-  if(!shown.length){
-
-    holder.innerHTML =
-      `<div class="empty">
-        No simulated wagers found.
-      </div>`;
-
-    return;
-  }
-
-
-  holder.innerHTML =
-    shown.map(b=>{
-
-      const status =
-        String(b.status || "pending").toLowerCase();
-
-      return `
-        <div class="card bet-card">
-
-          <div class="bet-top">
-
-            <div>
-              <strong>${escapeHtml(b.selection || "")}</strong>
-
-              <div
-                style="color:var(--muted);font-size:13px;margin-top:5px">
-                ${escapeHtml(b.sport || "")}
-              </div>
-            </div>
-
-            <span class="status ${status}">
-              ${escapeHtml(status)}
-            </span>
-
-          </div>
-
-          <div class="bet-details">
-
-            <div class="mini">
-              <small>Odds</small>
-              ${escapeHtml(b.odds || "")}
-            </div>
-
-            <div class="mini">
-              <small>Wager</small>
-              ${money(b.amount)}
-            </div>
-
-            <div class="mini">
-              <small>Potential</small>
-              ${money(b.potential_payout)}
-            </div>
-
-          </div>
-
-        </div>
-      `;
-
-    }).join("");
 }
 
+function renderSlip() {
 
-/* -------------------------
-   CASINO DEMOS
--------------------------- */
+const container =
+document.getElementById("picks");
 
-function playDemo(game){
+if (!selections.length) {
 
-  if(!currentUser){
-    toast("Log in to use demo games.");
-    openLogin();
-    return;
-  }
+container.innerHTML =
+`<div class="empty">
+Tap an odd to add a selection.
+</div>`;
 
-  const messages = {
-    Blackjack:"Blackjack demo: dealer shows 10 — your demo hand is 18.",
-    Roulette:"Roulette demo result: Red 23.",
-    Slots:"Slots demo: 🍒 7️⃣ 🍒",
-    Poker:"Poker demo: Pair of Aces."
-  };
+} else {
 
-  toast(messages[game] || "Demo round complete.");
+container.innerHTML =
+selections.map(
+pick => `
+
+<div class="pick">
+
+<div class="pick-top">
+
+<strong>
+${pick.selection}
+</strong>
+
+<button
+class="remove"
+onclick="removePick('${pick.id}')"
+>
+✕
+</button>
+
+</div>
+
+<div>
+${pick.market}
+
+${
+pick.line !== null
+? `${
+pick.line > 0
+? "+"
+: ""
+}${pick.line}`
+: ""
 }
 
+<strong>
+${formatOdds(
+pick.odds
+)}
+</strong>
 
-/* -------------------------
-   ADMIN
--------------------------- */
+</div>
 
-function showAdminSection(section,button){
+<small>
+${pick.away}
+@
+${pick.home}
+</small>
 
-  document.getElementById("admin-dashboard")
-    .classList.add("hidden");
+</div>
 
-  document.getElementById("admin-users")
-    .classList.add("hidden");
+`
+).join("");
 
-  document.getElementById("admin-activity")
-    .classList.add("hidden");
-
-  document.getElementById("admin-" + section)
-    .classList.remove("hidden");
-
-  document.querySelectorAll(".admin-nav-btn")
-    .forEach(el=>el.classList.remove("active"));
-
-  if(button){
-    button.classList.add("active");
-  }
-
-  if(section === "users"){
-    loadAdminUsers();
-  }
-
-  if(section === "activity"){
-    loadAdminActivity();
-  }
 }
 
+updateSlip();
 
-async function loadAdmin(){
-
-  if(!currentUser || currentUser.role !== "admin"){
-    goPage("account");
-    return;
-  }
-
-  await Promise.all([
-    loadAdminUsers(),
-    loadAdminActivity()
-  ]);
 }
 
+function combinedOdds() {
 
-async function loadAdminUsers(){
-
-  try{
-
-    adminUsers =
-      await api("/api/admin/users");
-
-    renderAdminUsers();
-
-    document.getElementById("adminTotalUsers").textContent =
-      adminUsers.length;
-
-    const totalBalance =
-      adminUsers.reduce(
-        (sum,user)=>sum + Number(user.balance || 0),
-        0
-      );
-
-    document.getElementById("adminTotalBalance").textContent =
-      money(totalBalance);
-
-    const pending =
-      adminUsers.filter(user=>!user.approved).length;
-
-    document.getElementById("adminPending").textContent =
-      pending;
-
-  }catch(error){
-    toast(error.message);
-  }
+if (!selections.length) {
+return 0;
 }
 
+return selections.reduce(
+(total, pick) =>
+total *
+americanToDecimal(
+pick.odds
+),
+1
+);
 
-function renderAdminUsers(){
-
-  const body =
-    document.getElementById("adminUsersBody");
-
-  body.innerHTML =
-    adminUsers.map(user=>{
-
-      const balance =
-        Number(user.balance || 0);
-
-      const deficit =
-        balance < 0
-          ? Math.abs(balance)
-          : 0;
-
-      return `
-        <tr>
-
-          <td>
-            <strong>${escapeHtml(user.username)}</strong>
-            <div
-              style="color:var(--muted);font-size:10px;margin-top:4px">
-              ${escapeHtml(user.role)}
-            </div>
-          </td>
-
-          <td>
-            ${
-              !user.approved
-              ? `<span class="status pending">Pending</span>`
-              : !user.active
-              ? `<span class="status lost">Suspended</span>`
-              : `<span class="status won">Active</span>`
-            }
-          </td>
-
-          <td
-            class="${balance < 0 ? "negative" : ""}">
-            ${money(balance)}
-          </td>
-
-          <td
-            class="${deficit > 0 ? "negative" : ""}">
-            ${
-              deficit > 0
-              ? money(deficit)
-              : "$0.00"
-            }
-          </td>
-
-          <td>
-            ${money(user.wager_limit)}
-          </td>
-
-          <td>
-
-            <div class="actions">
-
-              ${
-                !user.approved
-                ? `
-                  <button
-                    class="btn small green"
-                    onclick="patchUser(${user.id},{approved:true})">
-                    Approve
-                  </button>
-                `
-                : ""
-              }
-
-              <button
-                class="btn small ${user.active ? "danger" : "green"}"
-                onclick="patchUser(${user.id},{active:${!user.active}})">
-                ${user.active ? "Suspend" : "Activate"}
-              </button>
-
-              <button
-                class="btn small secondary"
-                onclick="openEditUser(${user.id})">
-                Balance / Limit
-              </button>
-
-            </div>
-
-          </td>
-
-        </tr>
-      `;
-
-    }).join("");
 }
 
+function updateSlip() {
 
-async function patchUser(id,data){
+const wager =
+Number(
+document.getElementById(
+"wager"
+).value || 0
+);
 
-  try{
+const decimalOdds =
+combinedOdds();
 
-    await api("/api/admin/users/" + id,{
-      method:"PATCH",
-      body:JSON.stringify(data)
-    });
+const totalReturn =
+wager > 0 &&
+decimalOdds > 0
+? wager *
+decimalOdds
+: 0;
 
-    toast("Player updated.");
+const win =
+Math.max(
+totalReturn -
+wager,
+0
+);
 
-    await loadAdminUsers();
+document.getElementById(
+"potentialWin"
+).textContent =
+`$${win.toFixed(2)}`;
 
-  }catch(error){
-    toast(error.message);
-  }
+document.getElementById(
+"totalReturn"
+).textContent =
+`$${totalReturn.toFixed(2)}`;
+
+document.getElementById(
+"placeButton"
+).disabled =
+!selections.length ||
+wager <= 0 ||
+wager > balance;
+
 }
 
+function placeBet() {
 
-function openEditUser(id){
+const wager =
+Number(
+document.getElementById(
+"wager"
+).value
+);
 
-  const user =
-    adminUsers.find(u=>Number(u.id) === Number(id));
+if (!selections.length) {
 
-  if(!user){
-    return;
-  }
+alert(
+"Choose a selection first."
+);
 
-  document.getElementById("editUserId").value =
-    user.id;
+return;
 
-  document.getElementById("editBalance").value =
-    user.balance;
-
-  document.getElementById("editWagerLimit").value =
-    user.wager_limit;
-
-  document.getElementById("editUserModal")
-    .classList.remove("hidden");
 }
 
+if (
+!wager ||
+wager <= 0
+) {
 
-async function saveUserMoneySettings(){
+alert(
+"Enter a wager amount."
+);
 
-  const id =
-    Number(document.getElementById("editUserId").value);
+return;
 
-  const balance =
-    Number(document.getElementById("editBalance").value);
-
-  const wagerLimit =
-    Number(document.getElementById("editWagerLimit").value);
-
-  try{
-
-    await patchUser(id,{
-      balance,
-      wagerLimit
-    });
-
-    closeModal("editUserModal");
-
-  }catch(error){
-    toast(error.message);
-  }
 }
 
+if (
+wager > balance
+) {
 
-/* -------------------------
-   ADMIN ACTIVITY
--------------------------- */
+alert(
+"Not enough demo balance."
+);
 
-async function loadAdminActivity(){
+return;
 
-  const holder =
-    document.getElementById("adminActivityList");
-
-  try{
-
-    const activity =
-      await api("/api/admin/activity");
-
-    if(!activity.length){
-
-      holder.innerHTML =
-        `<div class="empty">
-          No activity yet.
-        </div>`;
-
-      return;
-    }
-
-
-    holder.innerHTML =
-      activity.map(item=>`
-
-        <div class="activity-row">
-
-          <strong>
-            ${escapeHtml(item.username || "System")}
-          </strong>
-
-          <div style="margin-top:4px">
-            ${escapeHtml(item.action || "")}
-          </div>
-
-          ${
-            item.details
-            ? `<small>${escapeHtml(item.details)}</small>`
-            : ""
-          }
-
-        </div>
-
-      `).join("");
-
-  }catch(error){
-
-    holder.innerHTML =
-      `<div class="empty">
-        Could not load activity.
-      </div>`;
-
-  }
 }
 
+const decimalOdds =
+combinedOdds();
 
-/* -------------------------
-   ADMIN CREATE PLAYER
--------------------------- */
+const possibleReturn =
+wager *
+decimalOdds;
 
-function openCreatePlayer(){
+balance -= wager;
 
-  document.getElementById("createPlayerModal")
-    .classList.remove("hidden");
+const bet = {
+
+id:
+Date.now(),
+
+created:
+new Date()
+.toISOString(),
+
+wager,
+
+selections:
+[...selections],
+
+possibleReturn,
+
+status:
+"OPEN"
+
+};
+
+bets.unshift(
+bet
+);
+
+localStorage.setItem(
+"upb_bets",
+JSON.stringify(bets)
+);
+
+selections = [];
+
+document.getElementById(
+"wager"
+).value = "";
+
+saveBalance();
+
+renderSlip();
+
+renderHistory();
+
+alert(
+"Demo bet placed."
+);
+
 }
 
+function saveBalance() {
 
-async function adminCreatePlayer(){
+localStorage.setItem(
+"upb_balance",
+balance
+);
 
-  const username =
-    document.getElementById("newPlayerUsername").value.trim();
+document.getElementById(
+"balance"
+).textContent =
+`$${balance.toFixed(2)}`;
 
-  const password =
-    document.getElementById("newPlayerPassword").value;
-
-  if(username.length < 3){
-    toast("Username must be at least 3 characters.");
-    return;
-  }
-
-  if(password.length < 6){
-    toast("Password must be at least 6 characters.");
-    return;
-  }
-
-  try{
-
-    /*
-      Uses the existing signup route that is already
-      present in your server.js.
-    */
-
-    await api("/api/signup",{
-      method:"POST",
-      body:JSON.stringify({
-        username,
-        password
-      })
-    });
-
-    closeModal("createPlayerModal");
-
-    document.getElementById("newPlayerUsername").value = "";
-    document.getElementById("newPlayerPassword").value = "";
-
-    toast("Player created. Set approval, balance and limit next.");
-
-    await loadAdminUsers();
-
-    showAdminSection(
-      "users",
-      document.querySelectorAll(".admin-nav-btn")[1]
-    );
-
-  }catch(error){
-    toast(error.message);
-  }
 }
 
+function renderHistory() {
 
-/* -------------------------
-   SECURITY DISPLAY HELPER
--------------------------- */
+const container =
+document.getElementById(
+"history"
+);
 
-function escapeHtml(value){
+if (!bets.length) {
 
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+container.innerHTML =
+`<div class="empty">
+No bets yet.
+</div>`;
+
+return;
+
 }
 
+container.innerHTML =
+bets.slice(0,10).map(
+bet => `
 
-/* -------------------------
-   STARTUP
--------------------------- */
+<div class="history-item">
 
-async function startApp(){
+<strong>
 
-  await refreshMe();
-
-  await loadBets();
-
-  applyUser();
+${
+bet.selections.length > 1
+? `${bet.selections.length}-LEG PARLAY`
+: bet.selections[0].selection
 }
 
+</strong>
 
-startApp();
+<br>
+
+Wager:
+$${bet.wager.toFixed(2)}
+
+<br>
+
+Possible Return:
+$${bet.possibleReturn.toFixed(2)}
+
+<br>
+
+Status:
+${bet.status}
+
+</div>
+
+`
+).join("");
+
+}
+
+saveBalance();
+
+renderHistory();
+
+renderSlip();
+
+loadEverything();
+
+/*
+Refresh odds and scores every 60 seconds.
+*/
+setInterval(
+loadEverything,
+60000
+);
 
 </script>
 
